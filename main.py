@@ -1,25 +1,29 @@
 from core.game import Game, AI
+import copy
 
 def main():
     game = Game()
     ai = AI()
-    ai.getAllMoves(game.columns, game.rows, game.matrix)
+    queue = []
+    currentOperations = ai.getAllMoves(game.columns, game.rows, game.matrix)
 
+    # State, Operation
+    queue.append(('deal', 'deal'))
 
-    game.printGame()
-    # Pair -> [row, column] -> [y, x]
-    game.removePair([3,8], [2,8])
-    game.removePair([2,2], [0,0])
-    game.removePair([1,0], [0,0])
+    for i in currentOperations:
+        gameCopy = copy.deepcopy(game)
+        queue.append((gameCopy, i))
 
-    game.deal()
-    game.printGame()
+    while queue:
+        gameState, operation = queue.pop()
 
-    game.removePair([3,8], [2,8])
-    game.printGame()
+        if gameState == 'deal':
+            print('end')
+            break
+        else:
+            gameState.removePair(operation[0], operation[1])
+            gameState.printGame()
 
-    game.deal()
-    game.printGame()
 
 if __name__ == "__main__":
     main()

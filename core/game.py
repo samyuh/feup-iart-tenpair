@@ -103,8 +103,6 @@ class AI:
                             pairList.append([pair, pair2])
         return pairList
 
-
-
 class Game:
     """
     Game manager. Includes user actions
