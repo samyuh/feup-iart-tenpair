@@ -1,7 +1,11 @@
-from core.game import Game
+from core.game import Game, AI
 
 def main():
     game = Game()
+    ai = AI()
+    ai.getAllMoves(game.columns, game.rows, game.matrix)
+
+
     game.printGame()
     # Pair -> [row, column] -> [y, x]
     game.removePair([3,8], [2,8])
