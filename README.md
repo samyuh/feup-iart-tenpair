@@ -12,7 +12,14 @@
 > Group members of the project
 
 ### Description
-> Description of the project
+State Representation ->
+    Matrix of 9 Columns and 3 Rows
+
+Initial State -> 
+    Matrix on website
+
+Objetive State ->
+    Empty Matrix
 
 ### Setup
 Install python requirements
