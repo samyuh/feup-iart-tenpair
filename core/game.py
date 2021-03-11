@@ -34,36 +34,12 @@ class AI:
             spaceRow = column[row2+1:row1]
             if spaceRow.count(None) == len(spaceRow):
                 return True
-        """
-        elif index1 < index2:
-            space = matrix[index1+1:index2]
-            if space.count(None) == len(space):
-                return True
-
-            
-            columnNumber = index1 % 9
-            columnNumber2 = index2 % 9
-
-            if columnNumber != columnNumber2:
-                return False
-            
-            column = []
-            for i in range(rows):
-                column.append(matrix[columnNumber + i*columns])
-
-            row1 = index1 // 9
-            row2 = index2 // 9
-
-            spaceRow = column[row2+1:row1]
-            if spaceRow.count(None) == len(spaceRow):
-                return True
-        """
         return False
         
 
     def getAllMoves(self, columns, rows, matrix):
         lenMatrix = len(matrix)
-        return [[i, i2] for i in range(lenMatrix) for i2 in range(lenMatrix) if self.valid(columns, rows, matrix, i, i2)]
+        return [[i, i2] for i in range(lenMatrix) for i2 in range(i+1, lenMatrix) if self.valid(columns, rows, matrix, i2, i)]
 
 class Game:
     """

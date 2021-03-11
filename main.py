@@ -1,6 +1,7 @@
 from core.game import Game, AI
 import copy
 from _collections import deque
+import time
 
 # Number of moves 
 matrixStart = [1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -52,8 +53,10 @@ def main():
     ai = AI()
     queue = deque([gameState.copy()])
     visited = {"a", "b"}
-    while queue:
-        if (len(visited) % 3000 == 0):
+
+    start = time.time()
+    while True:
+        if (len(visited) % 10000 == 0):
             print("Visited: {} Remaining: {}".format(len(visited), len(queue)))
         #printGame(rows, columns, gameState)
         gameState = queue.popleft()
@@ -73,6 +76,8 @@ def main():
                 queue.append(gameCopy)
             #queue.append((gameState.copy(), 'deal'))
     print(len(visited))
+    end = time.time()
+    print(end - start)
 
 
 if __name__ == "__main__":
