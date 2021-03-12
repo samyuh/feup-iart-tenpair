@@ -35,23 +35,23 @@ def greedy(game):
 
         operationList = ai.getAllMoves(game.rows, game.columns, game.matrix)
         newGameMoves = game.moves + 1
+        
         for operation in operationList:
-            newGame = Game(newGameMoves, game.dealValue, game.rows, game.columns, game.matrix.copy(), greedyHeuristic(game.matrix.copy()))
+            newGame = Game(newGameMoves, game.dealValue, game.rows, game.columns, game.matrix.copy())
             newGame.removePair(operation[0], operation[1])
+            newGame.heuristic = greedyHeuristic(game.matrix.copy())
             if repr(newGame.matrix) not in visited:
                 visited.add(repr(newGame.matrix))
                 queue.put(newGame)
 
         rowsDeal, columnsDeal, gameStateDeal = game.deal(game.rows, game.columns, game.matrix.copy())
-        gameDeal = Game(game.moves, game.dealValue + 1, rowsDeal, columnsDeal, gameStateDeal, greedyHeuristic(gameStateDeal.copy()))
+        gameDeal = Game(game.moves, game.dealValue + 1, rowsDeal, columnsDeal, gameStateDeal)
+        gameDeal.heuristic = greedyHeuristic(game.matrix.copy())
         if repr(gameDeal.matrix) not in visited:
             visited.add(repr(gameDeal.matrix))
             queue.put(gameDeal)
 
         #print("Paths Chosen: {} Heuristic {}".format(queue.qsize, game.heuristic))
-
-        
-    
     end = time.time()
     print("Time elapsed: {}".format(end - start))
 
@@ -79,15 +79,16 @@ def aStar(game):
         operationList = ai.getAllMoves(game.rows, game.columns, game.matrix)
         newGameMoves = game.moves + 1
         for operation in operationList:
-            newGame = Game(newGameMoves, game.dealValue, game.rows, game.columns, game.matrix.copy(), greedyHeuristic(game.matrix.copy()))
+            newGame = Game(newGameMoves, game.dealValue, game.rows, game.columns, game.matrix.copy())
             newGame.removePair(operation[0], operation[1])
-            newGame.heuristic = greedyHeuristic(game.matrix.copy())
+            newGame.heuristic = newGameMoves + greedyHeuristic(game.matrix.copy())
             if repr(newGame.matrix) not in visited:
                 visited.add(repr(newGame.matrix))
                 queue.put(newGame)
 
         rowsDeal, columnsDeal, gameStateDeal = game.deal(game.rows, game.columns, game.matrix.copy())
-        gameDeal = Game(game.moves, game.dealValue + 1, rowsDeal, columnsDeal, gameStateDeal, greedyHeuristic(gameStateDeal.copy()))
+        gameDeal = Game(game.moves, game.dealValue + 1, rowsDeal, columnsDeal, gameStateDeal)
+        gameDeal.heuristic = game.moves + greedyHeuristic(gameStateDeal.copy())
         if repr(gameDeal.matrix) not in visited:
             visited.add(repr(gameDeal.matrix))
             queue.put(gameDeal)
@@ -136,13 +137,13 @@ def breathFirstSearch(game):
                     visited.add(repr(newGame.matrix))
                     append(newGame)
             
-            if game.dealValue < 1:
-                rowsDeal, columnsDeal, gameStateDeal = game.deal(game.rows, game.columns, game.matrix.copy())
-                gameDeal = Game(game.moves, game.dealValue + 1, rowsDeal, columnsDeal, gameStateDeal)
 
-                if repr(gameDeal.matrix) not in visited:
-                    visited.add(repr(gameDeal.matrix))
-                    append(gameDeal)
+            rowsDeal, columnsDeal, gameStateDeal = game.deal(game.rows, game.columns, game.matrix.copy())
+            gameDeal = Game(game.moves, game.dealValue + 1, rowsDeal, columnsDeal, gameStateDeal)
+
+            if repr(gameDeal.matrix) not in visited:
+                visited.add(repr(gameDeal.matrix))
+                append(gameDeal)
 
     end = time.time()
     print("Time elapsed: {}".format(end - start))
@@ -205,8 +206,9 @@ if __name__ == "__main__":
                 5, 1, 6, 1, 7, 1, 8, 1, 9]
     columns = 9
     rows = 3
-    game = Game(0, 0, rows, columns, gameState, greedyHeuristic(gameState))
+    game = Game(0, 0, rows, columns, gameState)
+    game.heuristic = greedyHeuristic(gameState)
 
-    greedy(game)
+    aStar(game)
 
     

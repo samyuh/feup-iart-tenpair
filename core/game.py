@@ -2,13 +2,12 @@ class Game:
     """
     Game manager. Includes user actions
     """
-    def __init__(self, moves, dealValue, rows, columns, matrix, heuristic = None): 
+    def __init__(self, moves, dealValue, rows, columns, matrix): 
         self.moves = moves
         self.dealValue = dealValue
         self.columns = columns
         self.rows = rows
         self.matrix = matrix
-        self.heuristic = heuristic
 
     def __gt__(self, other):
         return self.heuristic > other.heuristic
