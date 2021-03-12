@@ -21,9 +21,7 @@ class Ai:
         if columnNumber != columnNumber2:
             return False
 
-        column = []
-        for i in range(rows):
-            column.append(matrix[columnNumber + i*columns])
+        column = [matrix[columnNumber + i*columns] for i in range(rows) if columnNumber + i*columns < len(matrix)]
 
         row1 = index1 // 9
         row2 = index2 // 9

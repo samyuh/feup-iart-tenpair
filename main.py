@@ -70,11 +70,13 @@ def depthFirstSearch():
     """
     gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
                 1, 1, 1, 2, 1, 3, 1, 4, 1, 
-                5, 1, 6, 1, 7, 1, 8, 1, 9]
+                5, 1, 6, 1, 7, 1, 8, 1, 9,]
     columns = 9
-    rows = 3   
+    rows = 3 
     
     game = Game(0, rows, columns, gameState)
+    game.printGame()
+
     ai = Ai()
     # rows, columns, gameState = deal(rows, columns, gameState.copy())
     # Double Ended Queue to allow O(1) pop and append
@@ -89,7 +91,7 @@ def depthFirstSearch():
         
         # Next GameState
         game = queue.pop()
-
+        #game.printGame()
 
         # Found a solution [Empty Matrix]
         if game.isEmpty():
@@ -114,7 +116,6 @@ def depthFirstSearch():
                 append(newGame)
             
             rowsDeal, columnsDeal, gameStateDeal = game.deal(game.rows, game.columns, game.matrix.copy())
-            
             gameDeal = Game(game.moves, rowsDeal, columnsDeal, gameStateDeal)
 
             if rowsDeal < 7:
@@ -124,6 +125,6 @@ def depthFirstSearch():
     print("Time elapsed: {}".format(end - start))
 
 if __name__ == "__main__":
-    breathFirstSearch()
+    depthFirstSearch()
 
     

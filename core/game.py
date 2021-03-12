@@ -15,15 +15,13 @@ class Game:
         return False
 
     def printGame(self):
-        print("Game Grid: ")
-        for row in range(self.rows):
-            for i in range(self.columns):
-                element = self.matrix[self.rows*self.columns + i]
-                if element != None:
-                    print(element, end=" | ")
-                else:
-                    print(" ", end=" | ")
-            print("\n", end="")
+        print("Game Grid: ", end="")
+        for index, i in enumerate(self.matrix):
+            if index % self.columns == 0:
+                print("\n", end="")                   
+            print(i, end=" | ")
+        for j in range(self.columns* self.rows - len(self.matrix)):
+            print(" ", end=" | ")
 
     def removePair(self, coordsA, coordsB):
         self.matrix[coordsA] = None
@@ -31,16 +29,16 @@ class Game:
 
     def deal(self, rows, columns, matrix):
         # Create a matrix to append at the end filled with Null
-        auxMatrix = [None for i in range(columns) for i in range(rows)]
+        #auxMatrix = [None for i in range(columns) for i in range(rows)]
 
         # One dimension array of game matrix without Null elements 
         flattenMatrix = [element for element in matrix if element != None]
 
-        for index, element in enumerate(flattenMatrix):
-            auxMatrix[index] = element
+        #for index, element in enumerate(flattenMatrix):
+            #auxMatrix[index] = element
 
-        rows += rows
-        matrix.extend(auxMatrix)
-
+        matrix.extend(flattenMatrix)
+        rows = len(matrix) // 9                                             
+                                                                        
         return rows, columns, matrix
 
