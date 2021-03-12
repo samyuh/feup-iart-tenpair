@@ -45,7 +45,7 @@ def breathFirstSearch(game):
                 newGame.removePair(operation[0], operation[1])
                 append(newGame)
             
-            if game.dealValue < 2:
+            if game.dealValue < 1:
                 rowsDeal, columnsDeal, gameStateDeal = game.deal(game.rows, game.columns, game.matrix.copy())
                 gameDeal = Game(game.moves, game.dealValue + 1, rowsDeal, columnsDeal, gameStateDeal)
                 append(gameDeal)
@@ -114,6 +114,6 @@ if __name__ == "__main__":
     rows = 3   
     game = Game(0, 0, rows, columns, gameState)
 
-    depthFirstSearch(game)
+    breathFirstSearch(game)
 
     
