@@ -212,22 +212,21 @@ def iterativeDeepeningAux(game, depth):
     queue = deque([game])
     visited = set()
 
-    start = time.time()
+    
     while True:
 
         if (len(visited) % 10000 == 0):
             print("Visited: {} Remaining: {}".format(len(visited), len(queue)))
         
-        if  len(queue) == 0:
-            print("empty queue")
+        if len(queue) == 0:
+            print("failed depth ", depth)
             return False
         # Next GameState
         game = queue.pop()
         #game.printGame()
 
         
-        if game.moves + 1 == depth:
-            print("Maximum depth reached for this node")
+        if (game.moves + 1) == depth:
             continue  
 
         # Found a solution [Empty Matrix]
@@ -257,17 +256,27 @@ def iterativeDeepeningAux(game, depth):
                 gameDeal = Game(game.moves, game.dealValue + 1, rowsDeal, columnsDeal, gameStateDeal)
                 append(gameDeal)
 
-    end = time.time()
-    print("Time elapsed: {}".format(end - start))
+   
 
     
-def iterativeDeepening(game, maxDepth):
-    for i in range(25, maxDepth):
+def iterativeDeepening(maxDepth):
+    start = time.time()
+    for i in range(1, 28):
+        gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
+                      1, 1, 1, 2, 1, 3, 1, 4, 1, 
+                      5, 1, 6, 1, 7, 1, 8, 1, 9]
+        columns = 9
+        rows = 3
+        game = Game(0, 0, rows, columns, gameState)
+        game.heuristic = greedyHeuristic(gameState)
         print("depth", i ,"attempt") 
         if (iterativeDeepeningAux(game, i)):
+            end = time.time()
+            print("Time elapsed: {}".format(end - start))
             return True
 
 if __name__ == "__main__":
+    """
     gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
                 1, 1, 1, 2, 1, 3, 1, 4, 1, 
                 5, 1, 6, 1, 7, 1, 8, 1, 9]
@@ -275,7 +284,7 @@ if __name__ == "__main__":
     rows = 3
     game = Game(0, 0, rows, columns, gameState)
     game.heuristic = greedyHeuristic(gameState)
-
-    iterativeDeepening(game,30)
+    """
+    iterativeDeepening(30)
 
     
