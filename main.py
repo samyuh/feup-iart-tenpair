@@ -6,18 +6,10 @@ from _collections import deque
 from core.game import Game
 from core.ai import Ai
 
-def breathFirstSearch():
+def breathFirstSearch(game):
     """
         Breath First Search Algorithm
     """
-
-    gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
-                1, 1, 1, 2, 1, 3, 1, 4, 1, 
-                5, 1, 6, 1, 7, 1, 8, 1, 9]
-    columns = 9
-    rows = 3   
-    
-    game = Game(0, rows, columns, gameState)
     ai = Ai()
     # rows, columns, gameState = deal(rows, columns, gameState.copy())
     # Double Ended Queue to allow O(1) pop and append
@@ -49,33 +41,23 @@ def breathFirstSearch():
             operationList = ai.getAllMoves(game.rows, game.columns, game.matrix)
             newGameMoves = game.moves + 1
             for operation in operationList:
-                newGame = Game(newGameMoves, game.rows, game.columns, game.matrix.copy())
+                newGame = Game(newGameMoves, game.dealValue, game.rows, game.columns, game.matrix.copy())
                 newGame.removePair(operation[0], operation[1])
                 append(newGame)
             
-            rowsDeal, columnsDeal, gameStateDeal = game.deal(game.rows, game.columns, game.matrix.copy())
-            
-            gameDeal = Game(game.moves, rowsDeal, columnsDeal, gameStateDeal)
-
-            if rowsDeal < 7:
+            if game.dealValue < 2:
+                rowsDeal, columnsDeal, gameStateDeal = game.deal(game.rows, game.columns, game.matrix.copy())
+                gameDeal = Game(game.moves, game.dealValue + 1, rowsDeal, columnsDeal, gameStateDeal)
                 append(gameDeal)
 
     end = time.time()
     print("Time elapsed: {}".format(end - start))
 
 
-def depthFirstSearch():
+def depthFirstSearch(game):
     """
         Depth First Search Algorithm
     """
-    gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
-                1, 1, 1, 2, 1, 3, 1, 4, 1, 
-                5, 1, 6, 1, 7, 1, 8, 1, 9,]
-    columns = 9
-    rows = 3 
-    
-    game = Game(0, rows, columns, gameState)
-    game.printGame()
 
     ai = Ai()
     # rows, columns, gameState = deal(rows, columns, gameState.copy())
@@ -125,6 +107,13 @@ def depthFirstSearch():
     print("Time elapsed: {}".format(end - start))
 
 if __name__ == "__main__":
-    depthFirstSearch()
+    gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
+                1, 1, 1, 2, 1, 3, 1, 4, 1, 
+                5, 1, 6, 1, 7, 1, 8, 1, 9]
+    columns = 9
+    rows = 3   
+    game = Game(0, 0, rows, columns, gameState)
+
+    depthFirstSearch(game)
 
     

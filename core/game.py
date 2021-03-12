@@ -2,9 +2,9 @@ class Game:
     """
     Game manager. Includes user actions
     """
-    def __init__(self, moves, rows, columns, matrix):
-        # Number of moves 
+    def __init__(self, moves, dealValue, rows, columns, matrix): 
         self.moves = moves
+        self.dealValue = dealValue
         self.columns = columns
         self.rows = rows
         self.matrix = matrix
@@ -28,14 +28,8 @@ class Game:
         self.matrix[coordsB] = None
 
     def deal(self, rows, columns, matrix):
-        # Create a matrix to append at the end filled with Null
-        #auxMatrix = [None for i in range(columns) for i in range(rows)]
-
         # One dimension array of game matrix without Null elements 
         flattenMatrix = [element for element in matrix if element != None]
-
-        #for index, element in enumerate(flattenMatrix):
-            #auxMatrix[index] = element
 
         matrix.extend(flattenMatrix)
         rows = len(matrix) // 9                                             
