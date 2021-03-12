@@ -2,14 +2,24 @@ class Game:
     """
     Game manager. Includes user actions
     """
-    def __init__(self, moves, dealValue, rows, columns, matrix): 
+    def __init__(self, moves, dealValue, rows, columns, matrix, heuristic = None): 
         self.moves = moves
         self.dealValue = dealValue
         self.columns = columns
         self.rows = rows
         self.matrix = matrix
+        self.heuristic = heuristic
+
+    def __gt__(self, other):
+        return self.heuristic > other.heuristic
+    
+    def __eq__(self, other):
+        return self.heuristic == other.heuristic
 
     def isEmpty(self):
+        """
+        Objective Function
+        """
         if self.matrix == [None] * len(self.matrix):
             return True
         return False
@@ -35,4 +45,5 @@ class Game:
         rows = len(matrix) // 9                                             
                                                                         
         return rows, columns, matrix
+
 

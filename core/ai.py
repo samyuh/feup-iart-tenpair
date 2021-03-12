@@ -1,7 +1,4 @@
 class Ai:
-    def __init__(self):
-        pass
-
     def valid(self, columns, rows, matrix, index1, index2):
         element1 = matrix[index1]
         element2 = matrix[index2]
@@ -35,4 +32,4 @@ class Ai:
 
     def getAllMoves(self, rows, columns, matrix):
         lenMatrix = len(matrix)
-        return [[i, i2] for i in range(lenMatrix) for i2 in range(i+1, lenMatrix) if self.valid(columns, rows, matrix, i2, i)]
+        return [[i, i2] for i in range(lenMatrix) for i2 in range(i+1, lenMatrix) if self.valid(columns, rows, matrix, i2, i)]    
