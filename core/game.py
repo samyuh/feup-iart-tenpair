@@ -43,50 +43,47 @@ class Game:
     """
     Game manager. Includes user actions
     """
-    def __init__(self):
+    def __init__(self, columns, rows, matrix):
         # Number of moves 
         self.numMoves = 0
+        self.columns = columns
+        self.rows = rows
+        self.matrix = matrix
 
-        self.columns = 3
-        self.rows = 3   
-        self.matrix = [1, 2, 4,
-                        1, 2, 4, 
-                        1, 2, 4]
+    def isEmpty(self, matrix):
+        if matrix == [None] * len(matrix):
+            return True
+        return False
 
-    def isEmpty(self):
-        for element in self.matrix:
-            if element != None:
-                return False
-        return True
-
-    def printGame(self):
-        """
-            Print the game board
-        """
+    def printGame(self, rows, columns, matrix):
         print("Game Grid: ")
-        for row in range(self.rows):
-            for i in range(self.columns):
-                element = self.matrix[row*self.columns + i]
+        for row in range(rows):
+            for i in range(columns):
+                element = matrix[row*columns + i]
                 if element != None:
                     print(element, end=" | ")
                 else:
                     print(" ", end=" | ")
             print("\n", end="")
-    
-    def removePair(self, coordsA, coordsB):
-        self.matrix[coordsA] = None
-        self.matrix[coordsB] = None
 
-    def deal(self):
+    def removePair(self,  matrix, coordsA, coordsB):
+        matrix[coordsA] = None
+        matrix[coordsB] = None
+
+        return matrix
+
+    def deal(self, rows, columns, matrix):
         # Create a matrix to append at the end filled with Null
-        auxMatrix = [None for i in range(9) for i in range(self.rows)]
+        auxMatrix = [None for i in range(columns) for i in range(rows)]
 
         # One dimension array of game matrix without Null elements 
-        flattenMatrix = [element for element in self.matrix if element != None]
+        flattenMatrix = [element for element in matrix if element != None]
 
         for index, element in enumerate(flattenMatrix):
             auxMatrix[index] = element
 
-        self.rows += 3
-        self.matrix.extend(auxMatrix)
+        rows += rows
+        matrix.extend(auxMatrix)
+
+        return rows, columns, matrix
 
