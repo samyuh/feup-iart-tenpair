@@ -3,7 +3,8 @@ import time
 from _collections import deque
 
  # Personal Libraries
-from core.game import Game, AI
+from core.game import Game
+from core.ai import Ai
 
 def breathFirstSearch():
     """
@@ -16,45 +17,50 @@ def breathFirstSearch():
     columns = 9
     rows = 3   
     
-    game = Game(columns, rows, gameState)
-    ai = AI()
+    game = Game(0, rows, columns, gameState)
+    ai = Ai()
     # rows, columns, gameState = deal(rows, columns, gameState.copy())
     # Double Ended Queue to allow O(1) pop and append
     # Set to check if an element was already visited in O(1)
-    queue = deque([(rows, columns, gameState.copy())])
+    queue = deque([game])
     visited = set()
 
     start = time.time()
     while True:
         if (len(visited) % 10000 == 0):
             print("Visited: {} Remaining: {}".format(len(visited), len(queue)))
-            print(rows)
         
         # Next GameState
-        rows, columns, gameState = queue.popleft()
-        #printGame(rows, columns, gameState)
+        game = queue.popleft()
+
         # Found a solution [Empty Matrix]
-        if gameState == [None] * len(gameState):
-            print("found")
+        if game.isEmpty():
+            print("Found a solution: ")
+            print("Total Moves: {}".format(game.moves))
             break
         # GameState Already Visited
-        elif repr(gameState) in visited:
+        elif repr(game.matrix) in visited:
             pass
         # Get available moves and add them to the queue
         else:
-            visited.add(repr(gameState))
+            visited.add(repr(game.matrix))
+            append = queue.append
 
-            operationList = ai.getAllMoves(rows, columns, gameState)
-            removePair = game.removePair
+            operationList = ai.getAllMoves(game.rows, game.columns, game.matrix)
+            newGameMoves = game.moves + 1
             for operation in operationList:
-                queue.append((rows, columns, removePair(gameState.copy(), operation[0], operation[1])))
+                newGame = Game(newGameMoves, game.rows, game.columns, game.matrix.copy())
+                newGame.removePair(operation[0], operation[1])
+                append(newGame)
             
-            rowsDeal, columnsDeal, gameStateDeal = game.deal(rows, columns, gameState.copy())
-            if rowsDeal < 11:
-                queue.append((rowsDeal, columnsDeal, gameStateDeal))
+            rowsDeal, columnsDeal, gameStateDeal = game.deal(game.rows, game.columns, game.matrix.copy())
+            
+            gameDeal = Game(game.moves, rowsDeal, columnsDeal, gameStateDeal)
+
+            if rowsDeal < 7:
+                append(gameDeal)
 
     end = time.time()
-    print("Visited: {}".format(len(gameState)))
     print("Time elapsed: {}".format(end - start))
 
 
@@ -68,46 +74,53 @@ def depthFirstSearch():
     columns = 9
     rows = 3   
     
-    game = Game(columns, rows, gameState)
-    ai = AI()
+    game = Game(0, rows, columns, gameState)
+    ai = Ai()
     # rows, columns, gameState = deal(rows, columns, gameState.copy())
     # Double Ended Queue to allow O(1) pop and append
     # Set to check if an element was already visited in O(1)
-    queue = deque([(rows, columns, gameState.copy())])
+    queue = deque([game])
     visited = set()
 
     start = time.time()
     while True:
         if (len(visited) % 10000 == 0):
             print("Visited: {} Remaining: {}".format(len(visited), len(queue)))
-            print(rows)
         
         # Next GameState
-        rows, columns, gameState = queue.pop()
-        #printGame(rows, columns, gameState)
+        game = queue.pop()
+
+
         # Found a solution [Empty Matrix]
-        if gameState == [None] * len(gameState):
-            print("found")
+        if game.isEmpty():
+            print("Found a solution: ")
+            print("Total Moves: {}".format(game.moves))
             break
         # GameState Already Visited
-        elif repr(gameState) in visited:
+        elif repr(game.matrix) in visited:
             pass
         # Get available moves and add them to the queue
         else:
-            visited.add(repr(gameState))
+            visited.add(repr(game.matrix))
+            append = queue.append
 
-            operationList = ai.getAllMoves(rows, columns, gameState)
+            operationList = ai.getAllMoves(game.rows, game.columns, game.matrix)
+            #removePair = game.removePair
 
-            removePair = game.removePair 
+            newGameMoves = game.moves + 1
             for operation in operationList:
-                queue.append((rows, columns, removePair(gameState.copy(), operation[0], operation[1])))
+                newGame = Game(newGameMoves, game.rows, game.columns, game.matrix.copy())
+                newGame.removePair(operation[0], operation[1])
+                append(newGame)
             
-            rowsDeal, columnsDeal, gameStateDeal = game.deal(rows, columns, gameState.copy())
-            if rowsDeal < 11:
-                queue.appendleft((rowsDeal, columnsDeal, gameStateDeal))
+            rowsDeal, columnsDeal, gameStateDeal = game.deal(game.rows, game.columns, game.matrix.copy())
+            
+            gameDeal = Game(game.moves, rowsDeal, columnsDeal, gameStateDeal)
+
+            if rowsDeal < 7:
+                queue.appendleft(gameDeal)
 
     end = time.time()
-    print("Visited: {}".format(len(gameState)))
     print("Time elapsed: {}".format(end - start))
 
 if __name__ == "__main__":
