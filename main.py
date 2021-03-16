@@ -3,11 +3,13 @@ import time
 from _collections import deque
 from queue import PriorityQueue
 
- # Personal Libraries
+# Graphic Interface
+from tkinter import * 
+from threading import Thread
+
+# Personal Libraries
 from core.game import Game
 from core.ai import Ai
-
-from queue import PriorityQueue
 
 def greedyHeuristic(matrix):
     return len([element for element in matrix if element !=  None]) / 2
@@ -67,7 +69,7 @@ def aStar(game):
 
     visited = set()
     visited.add(repr(game.matrix))
-    
+
     start = time.time()
     while True:
         game = queue.get()
@@ -92,11 +94,9 @@ def aStar(game):
         if repr(gameDeal.matrix) not in visited:
             visited.add(repr(gameDeal.matrix))
             queue.put(gameDeal)
+        
 
         #print("Paths Chosen: {} Heuristic {}".format(queue.qsize, game.heuristic))
-
-        
-    
     end = time.time()
     print("Time elapsed: {}".format(end - start))
 
@@ -137,13 +137,13 @@ def breathFirstSearch(game):
                     visited.add(repr(newGame.matrix))
                     append(newGame)
             
+            if game.dealValue < 1:
+                rowsDeal, columnsDeal, gameStateDeal = game.deal(game.rows, game.columns, game.matrix.copy())
+                gameDeal = Game(game.moves, game.dealValue + 1, rowsDeal, columnsDeal, gameStateDeal)
 
-            rowsDeal, columnsDeal, gameStateDeal = game.deal(game.rows, game.columns, game.matrix.copy())
-            gameDeal = Game(game.moves, game.dealValue + 1, rowsDeal, columnsDeal, gameStateDeal)
-
-            if repr(gameDeal.matrix) not in visited:
-                visited.add(repr(gameDeal.matrix))
-                append(gameDeal)
+                if repr(gameDeal.matrix) not in visited:
+                    visited.add(repr(gameDeal.matrix))
+                    append(gameDeal)
 
     end = time.time()
     print("Time elapsed: {}".format(end - start))
@@ -217,6 +217,7 @@ def iterativeDeepeningAux(game, depth):
 
         if (len(visited) % 10000 == 0):
             print("Visited: {} Remaining: {}".format(len(visited), len(queue)))
+            
         
         if len(queue) == 0:
             print("failed depth ", depth)
@@ -275,16 +276,56 @@ def iterativeDeepening(maxDepth):
             print("Time elapsed: {}".format(end - start))
             return True
 
-if __name__ == "__main__":
-    """
+
+def aStarThread():
     gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
                 1, 1, 1, 2, 1, 3, 1, 4, 1, 
                 5, 1, 6, 1, 7, 1, 8, 1, 9]
     columns = 9
     rows = 3
+    print("here")
     game = Game(0, 0, rows, columns, gameState)
     game.heuristic = greedyHeuristic(gameState)
-    """
-    iterativeDeepening(30)
+    breathFirstSearch(game)
+    
+def threadMain():
+    print("here")
+    t1=Thread(target=aStarThread) 
+    t1.daemon = True 
+    t1.start() 
+
+if __name__ == "__main__":
+    # create a GUI window 
+
+    gui = Tk() 
+    # set the background colour of GUI window 
+    gui.configure(background="light blue") 
+ 
+    # set the title of GUI window 
+    gui.title("Tenpair Game") 
+ 
+    # set the configuration of GUI window 
+    gui.geometry("270x150")
+    aStarButton = Button(gui, text=' A-Star ', fg='white', bg='red', 
+                    command=threadMain, height=1, width=20)
+    aStarButton.grid(row=5, column=0)
+
+    greedyButton = Button(gui, text=' Greedy Algorithm ', fg='white', bg='red', 
+                    command=threadMain, height=1, width=20)
+    greedyButton.grid(row=6, column=0)
+
+    greedyButton = Button(gui, text=' Breath First ', fg='white', bg='red', 
+                    command=threadMain, height=1, width=20)
+    greedyButton.grid(row=7, column=0)
+
+    greedyButton = Button(gui, text=' Depth First ', fg='white', bg='red', 
+                    command=threadMain, height=1, width=20)
+    greedyButton.grid(row=8, column=0)  
+
+    greedyButton = Button(gui, text=' Iterative ', fg='white', bg='red', 
+                    command=threadMain, height=1, width=20)
+    greedyButton.grid(row=9, column=0)    
+    # start the GUI 
+    gui.mainloop() 
 
     
