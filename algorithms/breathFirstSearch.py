@@ -43,7 +43,6 @@ def breathFirstSearch(game):
             if game.dealValue < 1:
                 gameDeal = Game(game.moves, game.dealValue + 1, game.rows, game.columns,game.matrix.copy(), game)
                 gameDeal.deal()
-
                 if repr(gameDeal.matrix) not in visited:
                     visited.add(repr(gameDeal.matrix))
                     append(gameDeal)

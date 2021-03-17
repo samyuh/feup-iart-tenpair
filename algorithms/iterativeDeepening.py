@@ -39,12 +39,8 @@ def iterativeDeepeningAux(game, depth):
             print("Found a solution: ")
             print("Total Moves: {}".format(game.moves))
             return True
-        # GameState Already Visited
-        elif repr(game.matrix) in visited:
-            pass
         # Get available moves and add them to the queue
         else:
-            visited.add(repr(game.matrix))
             append = queue.append
 
             operationList = game.getAllMoves()
@@ -54,12 +50,16 @@ def iterativeDeepeningAux(game, depth):
             for operation in operationList:
                 newGame = Game(newGameMoves,game.dealValue, game.rows, game.columns, game.matrix.copy(), game)
                 newGame.removePair(operation[0], operation[1])
-                append(newGame)
+                if repr(newGame.matrix) not in visited:
+                    visited.add(repr(newGame.matrix))
+                    append(newGame)
 
             if game.dealValue < 1:
                 gameDeal = Game(game.moves, game.dealValue + 1, game.rows, game.columns,game.matrix.copy(), game)
                 gameDeal.deal()
-                append(gameDeal)
+                if repr(gameDeal.matrix) not in visited:
+                    visited.add(repr(gameDeal.matrix))
+                    append(gameDeal)
 
 def iterativeDeepening(maxDepth):
     start = time.time()
