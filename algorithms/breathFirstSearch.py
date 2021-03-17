@@ -36,7 +36,7 @@ def breathFirstSearch(game):
             operationList = ai.getAllMoves(game.rows, game.columns, game.matrix)
             newGameMoves = game.moves + 1
             for operation in operationList:
-                newGame = Game(newGameMoves, game.dealValue, game.rows, game.columns, game.matrix.copy())
+                newGame = Game(newGameMoves, game.dealValue, game.rows, game.columns, game.matrix.copy(), game)
                 newGame.removePair(operation[0], operation[1])
                 if repr(newGame.matrix) not in visited:
                     visited.add(repr(newGame.matrix))
@@ -44,7 +44,7 @@ def breathFirstSearch(game):
             
             if game.dealValue < 1:
                 rowsDeal, columnsDeal, gameStateDeal = game.deal(game.rows, game.columns, game.matrix.copy())
-                gameDeal = Game(game.moves, game.dealValue + 1, rowsDeal, columnsDeal, gameStateDeal)
+                gameDeal = Game(game.moves, game.dealValue + 1, rowsDeal, columnsDeal, gameStateDeal, game)
 
                 if repr(gameDeal.matrix) not in visited:
                     visited.add(repr(gameDeal.matrix))

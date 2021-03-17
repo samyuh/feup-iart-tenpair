@@ -44,13 +44,13 @@ def depthFirstSearch(game):
 
             newGameMoves = game.moves + 1
             for operation in operationList:
-                newGame = Game(newGameMoves,game.dealValue, game.rows, game.columns, game.matrix.copy())
+                newGame = Game(newGameMoves,game.dealValue, game.rows, game.columns, game.matrix.copy(),game)
                 newGame.removePair(operation[0], operation[1])
                 append(newGame)
 
             if game.dealValue < 1:
-                rowsDeal, columnsDeal, gameStateDeal = game.deal(game.rows, game.columns, game.matrix.copy())
-                gameDeal = Game(game.moves, game.dealValue + 1, rowsDeal, columnsDeal, gameStateDeal)
+                rowsDeal, columnsDeal, gameStateDeal = game.deal(game.rows, game.columns, game.matrix.copy(),)
+                gameDeal = Game(game.moves, game.dealValue + 1, rowsDeal, columnsDeal, gameStateDeal, game)
                 append(gameDeal)
 
     end = time.time()

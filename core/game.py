@@ -2,19 +2,27 @@ class Game:
     """
     Game manager. Includes user actions
     """
-    def __init__(self, moves, dealValue, rows, columns, matrix): 
+    def __init__(self, moves, dealValue, rows, columns, matrix, previousState = None): 
         self.moves = moves
         self.dealValue = dealValue
         self.columns = columns
         self.rows = rows
         self.matrix = matrix
         self.heuristic = 0
+        self.previousState = previousState
+       
 
     def __gt__(self, other):
         return self.heuristic > other.heuristic
     
     def __eq__(self, other):
         return self.heuristic == other.heuristic
+
+    def __repr__(self):
+        return str(self)
+
+    def __str__(self):
+        return str(self)
 
     def isEmpty(self):
         """
@@ -46,4 +54,27 @@ class Game:
                                                                         
         return rows, columns, matrix
 
+    def getFullGame(self):
+
+        gameSequence = [self]
+        currentGame = self
+        previousGame = self.previousState
+
+       
+        while isinstance(previousGame,Game): #currentgame = root
+            print("here")
+            currentGame = previousGame
+            gameSequence.append(currentGame)
+            previousGame = currentGame.previousState
+        
+        gameSequence.reverse()
+        return gameSequence
+
+
+    def printGameSequence(self):
+        gameSequence = self.getFullGame()
+        print(len(gameSequence))
+        
+        for i in gameSequence:
+            i.printGame()
 
