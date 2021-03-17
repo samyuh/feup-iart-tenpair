@@ -22,9 +22,9 @@ def aStar(game):
     while True:
         game = queue.get()
         if game.isEmpty():
+            game.printGameSequence()
             print("Found a solution: ")
             print("Total Moves: {}".format(game.moves))
-            game.printGameSequence()
             break  
 
         operationList = game.getAllMoves()

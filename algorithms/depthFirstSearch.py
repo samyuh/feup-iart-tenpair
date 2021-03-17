@@ -27,9 +27,9 @@ def depthFirstSearch(game):
 
         # Found a solution [Empty Matrix]
         if game.isEmpty():
+            game.printGameSequence()
             print("Found a solution: ")
             print("Total Moves: {}".format(game.moves))
-            game.printGameSequence()
             break
         # GameState Already Visited
         elif repr(game.matrix) in visited:

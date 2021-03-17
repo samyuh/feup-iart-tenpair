@@ -23,9 +23,9 @@ def greedy(game):
     while True:
         game = queue.get()
         if game.isEmpty():
+            game.printGameSequence()
             print("Found a solution: ")
             print("Total Moves: {}".format(game.moves))
-            game.printGameSequence()
             break  
 
         operationList = game.getAllMoves()
@@ -41,7 +41,7 @@ def greedy(game):
 
         gameDeal = Game(game.moves, game.dealValue + 1, game.rows, game.columns,game.matrix.copy(), game)
         gameDeal.deal()
-        gameDeal.heuristic = game.moves + greedyHeuristic(gameDeal.matrix.copy())
+        gameDeal.heuristic = greedyHeuristic(gameDeal.matrix.copy())
         if repr(gameDeal.matrix) not in visited:
             visited.add(repr(gameDeal.matrix))
             queue.put(gameDeal)
