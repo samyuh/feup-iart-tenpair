@@ -41,6 +41,7 @@ from algorithms.aStar import aStarThread
 from algorithms.breathFirstSearch import breathFirstSearchThread
 from algorithms.depthFirstSearch import depthFirstSearchThread
 from algorithms.greedySearch import greedySearchThread
+from algorithms.iterativeDeepening import iterativeDeepeningThread
 
 gui = Tk() 
 
@@ -83,6 +84,9 @@ def threadGreedySearch():
     t1.start() 
 
 def threadIterative():
+    t1=Thread(target=iterativeDeepeningThread) 
+    t1.daemon = True 
+    t1.start() 
     pass
 
 # ================== Frame 1 code

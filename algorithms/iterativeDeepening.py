@@ -61,7 +61,7 @@ def iterativeDeepeningAux(game, depth):
                     visited.add(repr(gameDeal.matrix))
                     append(gameDeal)
 
-def iterativeDeepening(maxDepth):
+def iterativeDeepeningThread():
     start = time.time()
     for i in range(1, 28):
         gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
