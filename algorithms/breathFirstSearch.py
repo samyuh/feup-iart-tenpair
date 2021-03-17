@@ -1,7 +1,5 @@
 # Personal Libraries
 from core.game import Game
-from core.ai import Ai
-
 import time
 from _collections import deque
 
@@ -9,7 +7,6 @@ def breathFirstSearch(game):
     """
         Breath First Search Algorithm
     """
-    ai = Ai()
     # rows, columns, gameState = deal(rows, columns, gameState.copy())
     # Double Ended Queue to allow O(1) pop and append
     # Set to check if an element was already visited in O(1)
@@ -28,12 +25,13 @@ def breathFirstSearch(game):
         if game.isEmpty():
             print("Found a solution: ")
             print("Total Moves: {}".format(game.moves))
+            game.printGameSequence()
             break
         # Get available moves and add them to the queue
         else:
             append = queue.append
 
-            operationList = ai.getAllMoves(game.rows, game.columns, game.matrix)
+            operationList = game.getAllMoves()
             newGameMoves = game.moves + 1
             for operation in operationList:
                 newGame = Game(newGameMoves, game.dealValue, game.rows, game.columns, game.matrix.copy(), game)

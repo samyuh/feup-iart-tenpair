@@ -1,6 +1,5 @@
 # Personal Libraries
 from core.game import Game
-from core.ai import Ai
 
 import time
 from queue import PriorityQueue
@@ -12,7 +11,6 @@ def greedy(game):
     """
     Greedy Algorithm
     """
-    ai = Ai()
 
     # Priority Queue to order by heuristic
     queue = PriorityQueue()
@@ -27,9 +25,10 @@ def greedy(game):
         if game.isEmpty():
             print("Found a solution: ")
             print("Total Moves: {}".format(game.moves))
+            game.printGameSequence()
             break  
 
-        operationList = ai.getAllMoves(game.rows, game.columns, game.matrix)
+        operationList = game.getAllMoves()
         newGameMoves = game.moves + 1
         
         for operation in operationList:

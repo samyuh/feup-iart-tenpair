@@ -1,7 +1,5 @@
 # Personal Libraries
 from core.game import Game
-from core.ai import Ai
-
 from queue import PriorityQueue
 import time
 
@@ -12,8 +10,6 @@ def aStar(game):
     """
     A* Algorithm
     """
-    ai = Ai()
-
     # Priority Queue to order by heuristic
     queue = PriorityQueue()
     queue.put(game)
@@ -28,11 +24,10 @@ def aStar(game):
         if game.isEmpty():
             print("Found a solution: ")
             print("Total Moves: {}".format(game.moves))
-            #print(game.getFullGame())
             game.printGameSequence()
             break  
 
-        operationList = ai.getAllMoves(game.rows, game.columns, game.matrix)
+        operationList = game.getAllMoves()
         newGameMoves = game.moves + 1
         for operation in operationList:
             newGame = Game(newGameMoves, game.dealValue, game.rows, game.columns, game.matrix.copy(), game)

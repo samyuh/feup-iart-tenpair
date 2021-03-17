@@ -1,6 +1,6 @@
 # Personal Libraries
 from core.game import Game
-from core.ai import Ai
+
 
 import time
 from _collections import deque
@@ -10,7 +10,6 @@ def depthFirstSearch(game):
         Depth First Search Algorithm
     """
 
-    ai = Ai()
     # rows, columns, gameState = deal(rows, columns, gameState.copy())
     # Double Ended Queue to allow O(1) pop and append
     # Set to check if an element was already visited in O(1)
@@ -30,6 +29,7 @@ def depthFirstSearch(game):
         if game.isEmpty():
             print("Found a solution: ")
             print("Total Moves: {}".format(game.moves))
+            game.printGameSequence()
             break
         # GameState Already Visited
         elif repr(game.matrix) in visited:
@@ -39,7 +39,7 @@ def depthFirstSearch(game):
             visited.add(repr(game.matrix))
             append = queue.append
 
-            operationList = ai.getAllMoves(game.rows, game.columns, game.matrix)
+            operationList = game.getAllMoves()
             #removePair = game.removePair
 
             newGameMoves = game.moves + 1
