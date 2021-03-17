@@ -45,14 +45,12 @@ class Game:
         self.matrix[coordsA] = None
         self.matrix[coordsB] = None
 
-    def deal(self, rows, columns, matrix):
+    def deal(self):
         # One dimension array of game matrix without Null elements 
-        flattenMatrix = [element for element in matrix if element != None]
+        flattenMatrix = [element for element in self.matrix if element != None]
 
-        matrix.extend(flattenMatrix)
-        rows = len(matrix) // 9                                             
-                                                                        
-        return rows, columns, matrix
+        self.matrix.extend(flattenMatrix)
+        self.rows = len(self.matrix) // 9                                             
 
     def getFullGame(self):
 

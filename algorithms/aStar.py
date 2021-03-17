@@ -42,9 +42,10 @@ def aStar(game):
                 visited.add(repr(newGame.matrix))
                 queue.put(newGame)
 
-        rowsDeal, columnsDeal, gameStateDeal = game.deal(game.rows, game.columns, game.matrix.copy())
-        gameDeal = Game(game.moves, game.dealValue + 1, rowsDeal, columnsDeal, gameStateDeal, game)
-        gameDeal.heuristic = game.moves + greedyHeuristic(gameStateDeal.copy())
+        #rowsDeal, columnsDeal, gameStateDeal = game.deal(game.rows, game.columns, game.matrix.copy())
+        gameDeal = Game(game.moves, game.dealValue + 1, game.rows, game.columns,game.matrix.copy(), game)
+        gameDeal.deal()
+        gameDeal.heuristic = game.moves + greedyHeuristic(gameDeal.matrix.copy())
         if repr(gameDeal.matrix) not in visited:
             visited.add(repr(gameDeal.matrix))
             queue.put(gameDeal)
