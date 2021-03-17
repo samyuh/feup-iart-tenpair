@@ -61,8 +61,7 @@ class Game:
         previousGame = self.previousState
 
        
-        while isinstance(previousGame,Game): #currentgame = root
-            print("here")
+        while isinstance(previousGame,Game):
             currentGame = previousGame
             gameSequence.append(currentGame)
             previousGame = currentGame.previousState
@@ -76,5 +75,8 @@ class Game:
         print(len(gameSequence))
         
         for i in gameSequence:
+            print()
             i.printGame()
+            print()
+        print()
 
