@@ -8,6 +8,7 @@ class Game:
         self.columns = columns
         self.rows = rows
         self.matrix = matrix
+        self.heuristic = 0
 
     def __gt__(self, other):
         return self.heuristic > other.heuristic
