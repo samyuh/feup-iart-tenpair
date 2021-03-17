@@ -86,8 +86,7 @@ def threadGreedySearch():
 def threadIterative():
     t1=Thread(target=iterativeDeepeningThread) 
     t1.daemon = True 
-    t1.start() 
-    pass
+    t1.start()
 
 # ================== Frame 1 code
 frame1_title = Label(frame1, text='Choose the Algorithm', font='times 35', bg='light blue')
