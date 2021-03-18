@@ -5,6 +5,13 @@ from threading import Thread
 
 import time
 
+# TODO: Cleanup with __init__ file :P
+from algorithms.aStar import aStarThread
+from algorithms.breathFirstSearch import breathFirstSearchThread
+from algorithms.depthFirstSearch import depthFirstSearchThread
+from algorithms.greedySearch import greedySearchThread
+from algorithms.iterativeDeepening import iterativeDeepeningThread
+
 class LoadingSplash:
     def __init__(self):
         self.root = Tk()
@@ -36,15 +43,7 @@ class LoadingSplash:
     def updateText(self):
         pass
 
-# TODO: Cleanup with __init__ file :P
-from algorithms.aStar import aStarThread
-from algorithms.breathFirstSearch import breathFirstSearchThread
-from algorithms.depthFirstSearch import depthFirstSearchThread
-from algorithms.greedySearch import greedySearchThread
-from algorithms.iterativeDeepening import iterativeDeepeningThread
-
 gui = Tk() 
-
 
 def show_frame(frame):
     frame.tkraise()
@@ -64,7 +63,7 @@ for frame in (frame1, frame2, frame3):
 
 def threadAStar():
     show_frame(frame2)
-    t1=Thread(target=aStarThread) 
+    t1=Thread(target=aStarThread, args=(show_frame, frame3)) 
     t1.daemon = True 
     t1.start() 
 
@@ -88,31 +87,25 @@ def threadIterative():
     t1.daemon = True 
     t1.start()
 
+algorithmsDict = {
+    "A Star": threadAStar,
+    "Breadth First Search": threadBreathFirstSearch,
+    "Depth First Search": threadDepthFirstSearch,
+    "Greedy Search": threadGreedySearch,
+    "Iterative Deepening": threadIterative
+}
+
 # ================== Frame 1 code
 frame1_title = Label(frame1, text='Choose the Algorithm', font='times 35', bg='light blue')
 frame1_title.pack(fill='both', expand=True)
 
-Button(frame1, text=' A-Star ', fg='white', bg='red', 
-    command=threadAStar, height=5, width=50).pack()
-
-Button(frame1, text=' Greedy Algorithm ', fg='white', bg='red', 
-    command=threadGreedySearch, height=5, width=50).pack()
-
-Button(frame1, text=' Breath First ', fg='white', bg='red', 
-    command=threadBreathFirstSearch, height=5, width=50).pack()
-
-Button(frame1, text=' Depth First ', fg='white', bg='red', 
-    command=threadDepthFirstSearch, height=5, width=50).pack()
-
-Button(frame1, text=' Iterative ', fg='white', bg='red', 
-    command=threadIterative, height=5, width=50).pack()
+for i, key in enumerate(algorithmsDict):
+    Button(frame1, text=key, fg='white', bg='red', 
+        command=algorithmsDict[key], height=5, width=50).pack()
 
 # ================== Frame 2 code
 frame2_title=  Label(frame2, text='Processing Nodes', font='times 35', bg='light blue')
 frame2_title.pack(fill='both', expand=True)
-
-frame2_btn = Button(frame2, text='Enter',command=lambda:show_frame(frame3))
-frame2_btn.pack(fill='x', ipady=15)
 
 # ================== Frame 3 code
 frame3_title=  Label(frame3, text='Done. Result:',font='times 35', bg='light blue')
@@ -123,37 +116,5 @@ frame3_btn.pack(fill='x',ipady=15)
 
 def main():
     # create a GUI window 
-    """
-    # set the background colour of GUI window 
-    gui.configure(background="light blue") 
-
-    # set the title of GUI window 
-    gui.title("Tenpair Game") 
-
-    # set the configuration of GUI window 
-    gui.geometry("270x150")
-    aStarButton = Button(gui, text=' A-Star ', fg='white', bg='red', 
-                    command=threadAStar, height=1, width=20)
-    aStarButton.grid(row=5, column=0)
-
-    greedyButton = Button(gui, text=' Greedy Algorithm ', fg='white', bg='red', 
-                    command=threadGreedySearch, height=1, width=20)
-    greedyButton.grid(row=6, column=0)
-
-    greedyButton = Button(gui, text=' Breath First ', fg='white', bg='red', 
-                    command=threadBreathFirstSearch, height=1, width=20)
-    greedyButton.grid(row=7, column=0)
-
-    greedyButton = Button(gui, text=' Depth First ', fg='white', bg='red', 
-                    command=threadDepthFirstSearch, height=1, width=20)
-    greedyButton.grid(row=8, column=0)  
-
-    greedyButton = Button(gui, text=' Iterative ', fg='white', bg='red', 
-                    command=threadIterative, height=1, width=20)
-    greedyButton.grid(row=9, column=0)    
-    # start the GUI 
-    gui.mainloop() 
-    """
     show_frame(frame1)
-
     gui.mainloop()

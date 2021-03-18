@@ -1,4 +1,5 @@
 # Personal Libraries
+from tkinter import *
 from core.game import Game
 from queue import PriorityQueue
 import time
@@ -48,10 +49,10 @@ def aStar(game):
 
         #print("Paths Chosen: {} Heuristic {}".format(queue.qsize, game.heuristic))
     end = time.time()
-    print("Time elapsed: {}".format(end - start))
+    return "Time elapsed: {}".format(end - start)
     
 
-def aStarThread():
+def aStarThread(showFrame, nextFrame):
     gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
                 1, 1, 1, 2, 1, 3, 1, 4, 1, 
                 5, 1, 6, 1, 7, 1, 8, 1, 9]
@@ -61,4 +62,8 @@ def aStarThread():
     game.heuristic = greedyHeuristic(gameState)
 
     print("Starting AStar")
-    aStar(game)
+    g = aStar(game)
+
+    Label(nextFrame, text= g).pack()
+    showFrame(nextFrame)
+
