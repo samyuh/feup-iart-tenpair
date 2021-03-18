@@ -79,7 +79,7 @@ class ShowResultsFrame(BaseFrame):
         frame3_title= tk.Label(self, text='Done. Result:',font='times 35', bg='light blue')
         frame3_title.pack(fill='both', expand=True)
 
-        frame3_btn = tk.Button(self, text='Enter',command=lambda: self.controller.show_frame(HomeFrame))
+        frame3_btn = tk.Button(self, text='Main Menu',command=lambda: self.controller.show_frame(HomeFrame))
         frame3_btn.pack(fill='x',ipady=15)
 
 

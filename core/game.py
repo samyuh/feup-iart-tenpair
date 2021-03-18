@@ -36,8 +36,11 @@ class Game:
         print("Game Grid: ", end="")
         for index, i in enumerate(self.matrix):
             if index % self.columns == 0:
-                print("\n", end="")                   
-            print(i, end=" | ")
+                print("\n", end="")   
+            if i == None:
+                print(" ", end=" | ")
+            else:                
+                print(i, end=" | ")
         for j in range(self.columns* self.rows - len(self.matrix)):
             print(" ", end=" | ")
 
