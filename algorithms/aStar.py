@@ -1,69 +1,74 @@
-# Personal Libraries
-from tkinter import *
-from core.game import Game
-from queue import PriorityQueue
+# -- Imports -- #
+# -- External Libraries -- #
 import time
+import threading
 
-def greedyHeuristic(matrix):
-    return len([element for element in matrix if element !=  None]) / 2
+from queue import PriorityQueue
 
-def aStar(game):
-    """
-    A* Algorithm
-    """
-    # Priority Queue to order by heuristic
-    queue = PriorityQueue()
-    queue.put(game)
+# Personal Libraries
+from core.game import Game
 
-    visited = set()
-    visited.add(repr(game.matrix))
+class AStar(threading.Thread):
+    def __init__(self, callback=lambda: None):
+        threading.Thread.__init__(self)
+        self.callback = callback
+
+        gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
+                    1, 1, 1, 2, 1, 3, 1, 4, 1, 
+                    5, 1, 6, 1, 7, 1, 8, 1, 9]
+        columns = 9
+        rows = 3
+        self.game = Game(0, 0, rows, columns, gameState)
+        self.game.heuristic = self.greedyHeuristic(gameState)
+
+    def greedyHeuristic(self, matrix):
+        return len([element for element in matrix if element !=  None]) / 2
+
+    def run(self):
+        """
+        A* Algorithm
+        """
+        print("Starting AStar")
+
+        game = self.game
+        # Priority Queue to order by heuristic
+        queue = PriorityQueue()
+        queue.put(game)
+
+        visited = set()
+        visited.add(repr(game.matrix))
 
 
-    start = time.time()
-    while True:
-        game = queue.get()
-        if game.isEmpty():
-            game.printGameSequence()
-            print("Found a solution: ")
-            print("Total Moves: {}".format(game.moves))
-            break  
+        start = time.time()
+        while True:
+            game = queue.get()
+            if game.isEmpty():
+                game.printGameSequence()
+                print("Found a solution: ")
+                print("Total Moves: {}".format(game.moves))
+                break  
 
-        operationList = game.getAllMoves()
-        newGameMoves = game.moves + 1
-        for operation in operationList:
-            newGame = Game(newGameMoves, game.dealValue, game.rows, game.columns, game.matrix.copy(), game)
-            newGame.removePair(operation[0], operation[1])
-            newGame.heuristic = newGameMoves + greedyHeuristic(game.matrix.copy())
-            if repr(newGame.matrix) not in visited:
-                visited.add(repr(newGame.matrix))
-                queue.put(newGame)
+            operationList = game.getAllMoves()
+            newGameMoves = game.moves + 1
+            for operation in operationList:
+                newGame = Game(newGameMoves, game.dealValue, game.rows, game.columns, game.matrix.copy(), game)
+                newGame.removePair(operation[0], operation[1])
+                newGame.heuristic = newGameMoves + self.greedyHeuristic(game.matrix.copy())
+                if repr(newGame.matrix) not in visited:
+                    visited.add(repr(newGame.matrix))
+                    queue.put(newGame)
 
-        #rowsDeal, columnsDeal, gameStateDeal = game.deal(game.rows, game.columns, game.matrix.copy())
-        gameDeal = Game(game.moves, game.dealValue + 1, game.rows, game.columns,game.matrix.copy(), game)
-        gameDeal.deal()
-        gameDeal.heuristic = game.moves + greedyHeuristic(gameDeal.matrix.copy())
-        if repr(gameDeal.matrix) not in visited:
-            visited.add(repr(gameDeal.matrix))
-            queue.put(gameDeal)
-        
+            #rowsDeal, columnsDeal, gameStateDeal = game.deal(game.rows, game.columns, game.matrix.copy())
+            gameDeal = Game(game.moves, game.dealValue + 1, game.rows, game.columns,game.matrix.copy(), game)
+            gameDeal.deal()
+            gameDeal.heuristic = game.moves + self.greedyHeuristic(gameDeal.matrix.copy())
+            if repr(gameDeal.matrix) not in visited:
+                visited.add(repr(gameDeal.matrix))
+                queue.put(gameDeal)
+            
 
-        #print("Paths Chosen: {} Heuristic {}".format(queue.qsize, game.heuristic))
-    end = time.time()
-    return "Time elapsed: {}".format(end - start)
-    
-
-def aStarThread(showFrame, nextFrame):
-    gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
-                1, 1, 1, 2, 1, 3, 1, 4, 1, 
-                5, 1, 6, 1, 7, 1, 8, 1, 9]
-    columns = 9
-    rows = 3
-    game = Game(0, 0, rows, columns, gameState)
-    game.heuristic = greedyHeuristic(gameState)
-
-    print("Starting AStar")
-    g = aStar(game)
-
-    Label(nextFrame, text= g).pack()
-    showFrame(nextFrame)
-
+            #print("Paths Chosen: {} Heuristic {}".format(queue.qsize, game.heuristic))
+        end = time.time()
+        self.callback()
+        a = "Time elapsed: {}".format(end - start)
+        print(a)

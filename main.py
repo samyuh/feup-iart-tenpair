@@ -1,4 +1,7 @@
-from interface.main import main
+from interface.main import PythonGUI
 
 if __name__ == "__main__":
-   main()
+   # create a GUI window 
+    app = PythonGUI()
+    app.mainloop()
+    exit()

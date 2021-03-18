@@ -1,120 +1,146 @@
-# Graphic Interface
-from tkinter import * 
+# -- Imports -- #
+# -- External Libraries -- #
+import tkinter as tk
 
-from threading import Thread
+# -- Costum Libraries -- #
+import algorithms
 
-import time
 
-# TODO: Cleanup with __init__ file :P
-from algorithms.aStar import aStarThread
-from algorithms.breathFirstSearch import breathFirstSearchThread
-from algorithms.depthFirstSearch import depthFirstSearchThread
-from algorithms.greedySearch import greedySearchThread
-from algorithms.iterativeDeepening import iterativeDeepeningThread
+class BaseFrame(tk.Frame):
+    """An abstract base class for the frames that sit inside PythonGUI.
 
-class LoadingSplash:
+    Args:
+      master (tk.Frame): The parent widget.
+      controller (PythonGUI): The controlling Tk object.
+
+    Attributes:
+      controller (PythonGUI): The controlling Tk object.
+
+    """
+
+    def __init__(self, master, controller):
+        tk.Frame.__init__(self, master)
+        self.controller = controller
+        self.grid()
+        self.create_widgets()
+
+    def create_widgets(self):
+        """Create the widgets for the frame."""
+        raise NotImplementedError
+
+
+class PythonGUI(tk.Tk):
+    """
+    The main window of the GUI.
+
+    Attributes:
+      container (tk.Frame): The frame container for the sub-frames.
+      frames (dict of tk.Frame): The available sub-frames.
+    """
     def __init__(self):
-        self.root = Tk()
-        self.root.config(bg="black")
-        self.root.title("Processing the algorithm")
-        self.root.geometry("900x500")
+        tk.Tk.__init__(self)
+        self.title("Python GUI")
+        self.create_widgets()
+        self.resizable(0, 0)
+        self.title("Tenpair Game") 
 
-        Label(self.root, text="Visited Nodes: XY", bg="black", fg="#FFBD09").place(x=300, y=100)
-        Label(self.root, text="Remaining Nodes: XY", bg="black", fg="#FFBD09").place(x=300, y=125)
-        Label(self.root, text="Loading...", bg="black", fg="#FFBD09").place(x=400, y=150)
+    def create_widgets(self):
+        """
+        Create the widgets for the frame.
+        """             
+        #  Frame Container
+        self.container = tk.Frame(self)
+        self.container.grid(row=0, column=0, sticky=tk.W+tk.E)
 
-        for i in range(16):
-            Label(self.root, bg="#1F2732", width=2, height=1).place(x=(i+12)*22, y=200)
+        #   Frames
+        self.frames = {}
+        for f in (HomeFrame, ExecuteFrame, ShowResultsFrame): # defined subclasses of BaseFrame
+            frame = f(self.container, self)
+            frame.grid(row=2, column=2, sticky=tk.NW+tk.SE)
+            self.frames[f] = frame
+        self.show_frame(HomeFrame)
 
-        #self.play_animation()
-        self.root.mainloop()
+    def show_frame(self, cls):
+        """Show the specified frame.
 
-    def play_animation(self):
-        for i in range(200):
-            for j in range(16):
-                Label(self.root, bg="#FFBD09", width=2, height=1).place(x=(j+12)*22, y=200)
-                self.root.update()
-                time.sleep(0.1)
-                Label(self.root, bg="#1F2732", width=2, height=1).place(x=(j+12)*22, y=200)
-        else:
-            self.root.destroy()
-            exit()
+        Args:
+          cls (tk.Frame): The class of the frame to show. 
 
-    def updateText(self):
-        pass
+        """
+        self.frames[cls].tkraise()    
 
-gui = Tk() 
 
-def show_frame(frame):
-    frame.tkraise()
-    
-gui.state('zoomed')
-gui.title("Tenpair Game") 
+class ShowResultsFrame(BaseFrame):
+    """
+    The app results page.
+    """
+    def create_widgets(self):
+        """Create the base widgets for the frame."""
+        frame3_title= tk.Label(self, text='Done. Result:',font='times 35', bg='light blue')
+        frame3_title.pack(fill='both', expand=True)
 
-gui.rowconfigure(0, weight=1)
-gui.columnconfigure(0, weight=1)
+        frame3_btn = tk.Button(self, text='Enter',command=lambda: self.controller.show_frame(HomeFrame))
+        frame3_btn.pack(fill='x',ipady=15)
 
-frame1 = Frame(gui)
-frame2 = Frame(gui)
-frame3 = Frame(gui)
 
-for frame in (frame1, frame2, frame3):
-    frame.grid(row=0, column=0, sticky='nsew')
+class ExecuteFrame(BaseFrame):
+    """
+    The application processing page.
+    """
 
-def threadAStar():
-    show_frame(frame2)
-    t1=Thread(target=aStarThread, args=(show_frame, frame3)) 
-    t1.daemon = True 
-    t1.start() 
+    def create_widgets(self):
+        """Create the base widgets for the frame."""
+        frame2_title = tk.Label(self, text='Processing Nodes', font='times 35', bg='light blue')
+        frame2_title.pack(fill='both', expand=True)
 
-def threadBreathFirstSearch():
-    t1=Thread(target=breathFirstSearchThread) 
-    t1.daemon = True 
-    t1.start() 
 
-def threadDepthFirstSearch():
-    t1=Thread(target=depthFirstSearchThread) 
-    t1.daemon = True 
-    t1.start() 
+class HomeFrame(BaseFrame):
+    """
+        The application home page.
+    """
 
-def threadGreedySearch():
-    t1=Thread(target=greedySearchThread) 
-    t1.daemon = True 
-    t1.start() 
+    def create_widgets(self):
+        """Create the base widgets for the frame."""
 
-def threadIterative():
-    t1=Thread(target=iterativeDeepeningThread) 
-    t1.daemon = True 
-    t1.start()
+        frame1_title = tk.Label(self, text='Choose the Algorithm', font='times 35', bg='light blue')
+        frame1_title.pack(fill='both', expand=True)
 
-algorithmsDict = {
-    "A Star": threadAStar,
-    "Breadth First Search": threadBreathFirstSearch,
-    "Depth First Search": threadDepthFirstSearch,
-    "Greedy Search": threadGreedySearch,
-    "Iterative Deepening": threadIterative
-}
+        algorithmsDict = {
+            "A Star": self.threadAStar,
+            "Breadth First Search": self.threadBreathFirstSearch,
+            "Depth First Search": self.threadDepthFirstSearch,
+            "Greedy Search": self.threadGreedySearch,
+            "Iterative Deepening": self.threadIterative
+        }
 
-# ================== Frame 1 code
-frame1_title = Label(frame1, text='Choose the Algorithm', font='times 35', bg='light blue')
-frame1_title.pack(fill='both', expand=True)
+        for key in algorithmsDict:
+            tk.Button(self, text=key, fg='white', bg='red', 
+                command= algorithmsDict[key], height=5, width=50).pack()
 
-for i, key in enumerate(algorithmsDict):
-    Button(frame1, text=key, fg='white', bg='red', 
-        command=algorithmsDict[key], height=5, width=50).pack()
+    def threadAStar(self):
+        thread = algorithms.AStar(self.changeState)
+        thread.start()
+        self.controller.show_frame(ExecuteFrame)
 
-# ================== Frame 2 code
-frame2_title=  Label(frame2, text='Processing Nodes', font='times 35', bg='light blue')
-frame2_title.pack(fill='both', expand=True)
+    def threadBreathFirstSearch(self):
+        thread = algorithms.BreathFirstSearch(self.changeState)
+        thread.start()
+        self.controller.show_frame(ExecuteFrame)
 
-# ================== Frame 3 code
-frame3_title=  Label(frame3, text='Done. Result:',font='times 35', bg='light blue')
-frame3_title.pack(fill='both', expand=True)
+    def threadDepthFirstSearch(self):
+        thread = algorithms.DepthFirstSearch(self.changeState)
+        thread.start()
+        self.controller.show_frame(ExecuteFrame)
 
-frame3_btn = Button(frame3, text='Enter',command=lambda:show_frame(frame1))
-frame3_btn.pack(fill='x',ipady=15)
+    def threadGreedySearch(self):
+        thread = algorithms.GreedySearch(self.changeState)
+        thread.start()
+        self.controller.show_frame(ExecuteFrame) 
 
-def main():
-    # create a GUI window 
-    show_frame(frame1)
-    gui.mainloop()
+    def threadIterative(self):
+        thread = algorithms.IterativeDeepening(self.changeState)
+        thread.start()
+        self.controller.show_frame(ExecuteFrame)
+
+    def changeState(self):
+        self.controller.show_frame(ShowResultsFrame)
