@@ -39,6 +39,8 @@ class GreedySearch(threading.Thread):
         while True:
             game = queue.get()
             if game.isEmpty():
+                gameStates = game.getFullGame()
+                self.callback(gameStates)
                 game.printGameSequence()
                 print("Found a solution: ")
                 print("Total Moves: {}".format(game.moves))

@@ -16,18 +16,17 @@ class IterativeDeepening(threading.Thread):
     def run(self):
         start = time.time()
         for i in range(1, 28):
-            gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
-                        1, 1, 1, 2, 1, 3, 1, 4, 1, 
-                        5, 1, 6, 1, 7, 1, 8, 1, 9]
-            columns = 9
-            rows = 3
+            gameState = [1, 2, 3, 4, 5, 6,
+                    1, 1, 1, 2, 1, 3,
+                    ]
+            columns = 6
+            rows = 2
             game = Game(0, 0, rows, columns, gameState)
             game.heuristic = self.greedyHeuristic(gameState)
             print("depth", i ,"attempt") 
             if (self.iterativeDeepeningAux(game, i)):
                 end = time.time()
                 print("Time elapsed: {}".format(end - start))
-                self.callback()
 
     def greedyHeuristic(self, matrix):
         return len([element for element in matrix if element !=  None]) / 2
@@ -60,6 +59,8 @@ class IterativeDeepening(threading.Thread):
 
             # Found a solution [Empty Matrix]
             if game.isEmpty():
+                gameStates = game.getFullGame()
+                self.callback(gameStates)
                 game.printGameSequence()
                 print("Found a solution: ")
                 print("Total Moves: {}".format(game.moves))

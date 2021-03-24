@@ -43,6 +43,8 @@ class DepthFirstSearch(threading.Thread):
 
             # Found a solution [Empty Matrix]
             if game.isEmpty():
+                test = game.getFullGame()
+                self.callback(test)
                 game.printGameSequence()
                 print("Found a solution: ")
                 print("Total Moves: {}".format(game.moves))
@@ -71,4 +73,5 @@ class DepthFirstSearch(threading.Thread):
 
         end = time.time()
         print("Time elapsed: {}".format(end - start))
-        self.callback()
+        #a = game.getFullGame()
+        

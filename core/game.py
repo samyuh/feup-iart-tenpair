@@ -10,6 +10,7 @@ class Game:
         self.matrix = matrix
         self.heuristic = 0
         self.previousState = previousState
+        self.pair = None
        
 
     def __gt__(self, other):
@@ -45,6 +46,7 @@ class Game:
             print(" ", end=" | ")
 
     def removePair(self, coordsA, coordsB):
+        self.pair = [coordsA, coordsB]
         self.matrix[coordsA] = None
         self.matrix[coordsB] = None
 
@@ -56,7 +58,6 @@ class Game:
         self.rows = len(self.matrix) // 9                                             
 
     def getFullGame(self):
-
         gameSequence = [self]
         currentGame = self
         previousGame = self.previousState
@@ -76,6 +77,7 @@ class Game:
         
         for i in gameSequence:
             print()
+            print(i.pair)
             i.printGame()
             print()
         print()

@@ -43,6 +43,8 @@ class AStar(threading.Thread):
         while True:
             game = queue.get()
             if game.isEmpty():
+                gameStates = game.getFullGame()
+                self.callback(gameStates)
                 game.printGameSequence()
                 print("Found a solution: ")
                 print("Total Moves: {}".format(game.moves))
@@ -69,6 +71,5 @@ class AStar(threading.Thread):
 
             #print("Paths Chosen: {} Heuristic {}".format(queue.qsize, game.heuristic))
         end = time.time()
-        self.callback()
         a = "Time elapsed: {}".format(end - start)
         print(a)
