@@ -27,8 +27,8 @@ class BaseFrame(tk.Frame):
     def __init__(self, master, controller):
         tk.Frame.__init__(self, master)
         self.controller = controller
-        self.config(background="#212121")
         self.create_widgets()
+        self.configure(bg="#212121")
 
     def create_widgets(self):
         """Create the widgets for the frame."""
@@ -47,11 +47,9 @@ class PythonGUI(tk.Tk):
         tk.Tk.__init__(self)
         self.title("Python GUI")
         self.create_widgets()
-        self.resizable(2560, 1440)
         self.title("Tenpair Game") 
-        self.y = self.winfo_screenheight()
-        self.x = self.winfo_screenwidth()
-
+        self.resizable(2560, 1440)
+        self.minsize(1100, 700)
 
     def create_widgets(self):
         """
@@ -59,20 +57,39 @@ class PythonGUI(tk.Tk):
         """             
         #  Frame Container
         self.attributes('-zoomed', True)
-        self.container = tk.Frame(self)
-        #self.container.pack(fill = "both")
-        self.container.pack(fill = tk.BOTH, expand = "true")
+
+        # Create Canvas
+        self.my_canvas = tk.Canvas(self, bg="#212121", highlightthickness=0)
+        self.my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+
+        # Scrollbar
+        my_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=self.my_canvas.yview)
+        my_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # Configure canvas
+        self.my_canvas.configure(yscrollcommand = my_scrollbar.set)
+        self.my_canvas.bind('<Configure>', self.canvas_bind)
+
+        # Create Main Frame
+        self.container = tk.Frame(self.my_canvas)
         self.container.rowconfigure(0, weight=1) # this needed to be added
         self.container.columnconfigure(0, weight=1) # as did this
+        self.container.configure(bg="#212121")
+        #self.container.place(relx=0.5, rely=0, anchor = tk.N)
+       
+        self.canvas_window = self.my_canvas.create_window(0, 0, window = self.container, width=self.winfo_screenwidth())
 
         #   Frames
         self.frames = {}
-        for f in (HomeFrame, ExecuteFrame, ShowResultsFrame): # defined subclasses of BaseFrame
+        for f in (HomeFrame, ShowResultsFrame): # defined subclasses of BaseFrame
             frame = f(self.container, self)
-            
             frame.grid(row = 0, column = 0, sticky = "nsew")
             self.frames[f] = frame
         self.show_frame(HomeFrame)
+
+    def canvas_bind(self,e):
+        self.my_canvas.itemconfig(self.canvas_window , width=e.width)
+        self.my_canvas.configure(scrollregion = self.my_canvas.bbox("all"))
 
     def show_frame(self, cls):
         """Show the specified frame.
@@ -84,41 +101,6 @@ class PythonGUI(tk.Tk):
         self.frames[cls].tkraise()    
 
 
-class ExecuteFrame(BaseFrame):
-    """
-    The application processing page.
-    """
-
-    def create_widgets(self):
-        """Create the base widgets for the frame."""
-        
-        frame2_title = tk.Label(self, text='Processing Nodes', font='times 35', bg='light blue')
-        frame2_title.pack(fill='both', expand=True)
-        """
-        tk.Label(self, text="Visited Nodes: XY", bg="black", fg="#FFBD09").place(x=300, y=100)
-        tk.Label(self, text="Remaining Nodes: XY", bg="black", fg="#FFBD09").place(x=300, y=125)
-        tk.Label(self, text="Loading...", bg="black", fg="#FFBD09").place(x=400, y=150)
-
-        for i in range(16):
-            tk.Label(self, bg="#1F2732", width=2, height=1).place(x=(i+12)*22, y=200)
-
-        self.play_animation()
-        """
-        
-    def play_animation(self):
-        """
-        for i in range(200):
-            for j in range(16):
-                tk.Label(self, bg="#FFBD09", width=2, height=1).place(x=(j+12)*22, y=200)
-                self.update()
-                time.sleep(0.1)
-                tk.Label(self, bg="#1F2732", width=2, height=1).place(x=(j+12)*22, y=200)
-        else:
-            self.destroy()
-            exit()
-        """
-
-
 class ShowResultsFrame(BaseFrame):
     def __init__(self, master, controller):
         BaseFrame.__init__(self, master, controller)
@@ -127,7 +109,6 @@ class ShowResultsFrame(BaseFrame):
         self.loading = False
         self.clearFrame()
         self.states = state
-
         self.actual_state = 0
         self.move_count = 0
 
@@ -135,11 +116,7 @@ class ShowResultsFrame(BaseFrame):
 
         # todo: adjust frame size as desired
         self.main_grid = tk.Frame(self, bg = "#c7c7c7", bd = "3")
-        
-        self.main_grid.rowconfigure(0, weight=1) # this needed to be added
-        self.main_grid.columnconfigure(0, weight=1) # as did this
-        self.main_grid.pack(pady=100)
-        #self.main_grid.grid()
+        self.main_grid.pack(pady=(100,0))
 
         # Create Gui and represent first state
         self.make_GUI(first_state)
@@ -162,18 +139,19 @@ class ShowResultsFrame(BaseFrame):
         
     def play_animation(self):
         self.loadingText = tk.Label(self, text='Processing Nodes...', font='Monoid 35 bold', bg='#212121', fg="#ffffff")
-        self.loadingText.pack(fill='both', expand=True)
-
+        self.loadingText.place(relx=0.5, rely=0.5, anchor = tk.CENTER)
+  
+        
         self.loading = True
         while(self.loading):
             if self.loadingText:
                 self.loadingText.destroy()
             self.loadingText = tk.Label(self, text='Processing Nodes' + self.loadingNext * '.' + ' ' * (3 - self.loadingNext), font='Monoid 35 bold', bg='#212121', fg="#ffffff")
-            self.loadingText.pack(fill='both', expand=True)
+            self.loadingText.place(relx=0.5, rely=0.5, anchor = tk.CENTER)
             self.update()
             time.sleep(0.5)
             self.loadingNext = (self.loadingNext + 1) % 4
-        self.loadingText.destroy()   
+        self.loadingText.destroy()
 
     def make_GUI(self, first_state):
         self.cells = []
@@ -253,6 +231,10 @@ class ShowResultsFrame(BaseFrame):
         self.move_count = state.moves
         self.moves_label.configure(text=self.move_count)
         self.update_idletasks()
+
+        # Update scroll
+        self.controller.my_canvas.configure(scrollregion = self.controller.my_canvas.bbox("all"))
+
 
     def next_move(self):
         self.update_GUI()
