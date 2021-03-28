@@ -42,6 +42,7 @@ class ShowResultsFrame(BaseFrame):
         frame2_title = tk.Label(self, text='Processing Nodes', font='times 35', bg='light blue')
         frame2_title.pack(fill='both', expand=True)
         """
+        self.loading = True
         self.loadingNext = 0
         
         
@@ -49,8 +50,6 @@ class ShowResultsFrame(BaseFrame):
         self.loadingText = tk.Label(self, text='Processing Nodes...', font='Monoid 35 bold', bg='#212121', fg="#ffffff")
         self.loadingText.place(relx=0.5, rely=0.5, anchor = tk.CENTER)
   
-        
-        self.loading = True
         while(self.loading):
             if self.loadingText:
                 self.loadingText.destroy()

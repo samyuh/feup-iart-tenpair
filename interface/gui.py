@@ -67,9 +67,11 @@ class PythonGUI(tk.Tk):
 
     def routePlayerGame(self):
         self.frames[PlayerGame].tkraise()
+        self.frames[PlayerGame].start_game()
 
     def routeShowResultsFrame(self):
         self.frames[ShowResultsFrame].tkraise()
+        self.frames[ShowResultsFrame].play_animation()
 
     def getShowResultsFrame(self):
         return ShowResultsFrame
