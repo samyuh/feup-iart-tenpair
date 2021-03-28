@@ -1,22 +1,18 @@
 # -- Imports -- #
 # -- External Libraries -- #
 import tkinter as tk
+import time
 
 # -- Costum Libraries -- #
 import algorithms
-
-from tkinter import Button
-from tkinter.font import Font
 from core import Game, Logic
-
-
-import time
-
 from .frame import BaseFrame
 
 class PlayerGame(BaseFrame):
     def start_game(self):
+        self.currentHint = [0, 2]
         self.selected = None
+        self.runningHint = False
         self.loading = False
         self.clearFrame()
 
@@ -34,17 +30,17 @@ class PlayerGame(BaseFrame):
         self.update_GUI()
 
         # Quit Button
-        self.quitBtn = Button(self, text="Quit", command = lambda self=self: self.controller.routeHomeFrame() , font='Roboto 11 bold', fg='#ffffff', bg='#1D8EA0')
+        self.quitBtn = tk.Button(self, text="Quit", command = lambda self=self: self.controller.routeHomeFrame() , font='Roboto 11 bold', fg='#ffffff', bg='#1D8EA0')
         self.quitBtn.place(relx=0.6, y=45)
         self.quitBtn.config(highlightbackground='#1D8EA0')
 
         # Next Move Button
-        self.hintBtn = Button(self, text="Next Move", command = print("HINT TO DO"), font='Roboto 11 bold', fg='#ffffff', bg='#1D8EA0')
+        self.hintBtn = tk.Button(self, text="Hint", command = self.computerHint, font='Roboto 11 bold', fg='#ffffff', bg='#1D8EA0')
         self.hintBtn.place(relx=0.7, y=45)
         self.hintBtn.config(highlightbackground='#1D8EA0')
 
         # Deal Button
-        self.dealBtn = Button(self, text="Deal", command = self.playerDeal, font='Roboto 11 bold', fg='#ffffff', bg='#1D8EA0')
+        self.dealBtn = tk.Button(self, text="Deal", command = self.playerDeal, font='Roboto 11 bold', fg='#ffffff', bg='#1D8EA0')
         self.dealBtn.place(relx=0.8, y=45)
         self.dealBtn.config(highlightbackground='#1D8EA0')
 
@@ -54,41 +50,62 @@ class PlayerGame(BaseFrame):
         """
         pass
 
-    def playerMove(self,i,j):
+    def getNextMove(self, states):
+        self.runningHint = False
+        for i in states:
+            print(i.matrix)
+
+        self.cells[0][0]["frame"].configure(bg="#FFFF00")
+        self.cells[0][0]["number"].configure(bg="#FFFF00")
+
+        self.cells[0][1]["frame"].configure(bg="#FFFF00")
+        self.cells[0][1]["number"].configure(bg="#FFFF00")
+
+    def computerHint(self):
+        if not self.runningHint:
+            self.runningHint = True
+            thread = algorithms.GreedySearch(self.game, self.getNextMove)
+            thread.start()
+
+            print("Hint!")
+            
+
+    def playerMove(self, i, j):
         if self.selected == None:
-            self.selected = [[i, j],]
             self.cells[i][j]["frame"].configure(bg="#7BB9C2")
             self.cells[i][j]["number"].configure(bg="#7BB9C2")
+            self.selected = [[i, j],]
+            self.update_idletasks()
+            return
         elif self.selected[0] == [i, j]:
             self.selected = None
             self.cells[i][j]["frame"].configure(bg="#f2f2f2")
             self.cells[i][j]["number"].configure( bg="#f2f2f2")
+            self.update_idletasks()
+            return
         else:
             # Verify if it is a pair
             i0 = self.selected[0][0]
             j0 = self.selected[0][1]
             previousIndex = i0 * 9 + j0
             currentIndex = i * 9 + j
-            print(str(previousIndex) + " " + str(currentIndex))
-            print(Logic.getAllMoves(self.game))
-            print(Logic.validMove(self.game, previousIndex, currentIndex))
-
             # Bigger should be always the first
             if (previousIndex < currentIndex):
                 previousIndex, currentIndex = currentIndex, previousIndex
-            
-            print(str(previousIndex) + " " + str(currentIndex))
-            print(Logic.validMove(self.game, previousIndex, currentIndex))
+
             if not Logic.validMove(self.game, previousIndex, currentIndex):
                 self.selected = None
                 self.cells[i0][j0]["frame"].configure(bg="#f2f2f2")
-                self.cells[i0][j0]["number"].configure( bg="#f2f2f2")
+                self.cells[i0][j0]["number"].configure(bg="#f2f2f2")
                 return
 
             self.game.removePair(previousIndex, currentIndex)
 
             i0 = self.selected[0][0]
             j0 = self.selected[0][1]
+
+            self.cells[i0][j0]["frame"].configure(bg="#7BB9C2")
+            self.cells[i0][j0]["number"].configure( bg="#7BB9C2")
 
             self.cells[i][j]["frame"].configure(bg="#7BB9C2")
             self.cells[i][j]["number"].configure(bg="#7BB9C2")
@@ -100,7 +117,6 @@ class PlayerGame(BaseFrame):
 
             self.cells[i][j]["frame"].configure(bg="#f2f2f2")
             self.cells[i][j]["number"].configure(text = "", bg="#f2f2f2")
-
             self.selected = None
 
         self.update_GUI()

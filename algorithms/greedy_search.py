@@ -10,18 +10,12 @@ from core.game import Game
 from core.logic import Logic
 
 class GreedySearch(threading.Thread):
-    def __init__(self, callback=lambda: None):
+    def __init__(self, game, callback=lambda: None):
         threading.Thread.__init__(self)
         self.callback = callback
+        self.game = game
 
-        gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
-                    1, 1, 1, 2, 1, 3, 1, 4, 1, 
-                    5, 1, 6, 1, 7, 1, 8, 1, 9]
-        columns = 9
-        rows = 3
-        self.game = Game(0, 0, rows, columns, gameState)
-
-    def greedyHeuristic(self, matrix):
+    def heuristic(self, matrix):
         return len([element for element in matrix if element !=  None]) / 2
 
     def run(self):
@@ -40,9 +34,11 @@ class GreedySearch(threading.Thread):
         while True:
             game = queue.get()
             if game.isEmpty():
+                end = time.time()
+                print("Time elapsed: {}".format(end - start))
+                
                 gameStates = game.getFullGame()
                 self.callback(gameStates)
-                game.printGameSequence()
                 print("Found a solution: ")
                 print("Total Moves: {}".format(game.moves))
                 break  
@@ -53,19 +49,15 @@ class GreedySearch(threading.Thread):
             for operation in operationList:
                 newGame = Game(newGameMoves, game.dealValue, game.rows, game.columns, game.matrix.copy(),game)
                 newGame.removePair(operation[0], operation[1])
-                newGame.heuristic = self.greedyHeuristic(game.matrix.copy())
+                newGame.heuristic = self.heuristic(game.matrix.copy())
                 if repr(newGame.matrix) not in visited:
                     visited.add(repr(newGame.matrix))
                     queue.put(newGame)
 
             gameDeal = Game(game.moves, game.dealValue + 1, game.rows, game.columns,game.matrix.copy(), game)
             Logic.deal(gameDeal)
-            gameDeal.heuristic = self.greedyHeuristic(gameDeal.matrix.copy())
+            gameDeal.heuristic = self.heuristic(gameDeal.matrix.copy())
             if repr(gameDeal.matrix) not in visited:
                 visited.add(repr(gameDeal.matrix))
                 queue.put(gameDeal)
-
-            #print("Paths Chosen: {} Heuristic {}".format(queue.qsize, game.heuristic))
-        end = time.time()
-        self.callback()
-        print("Time elapsed: {}".format(end - start))
+        

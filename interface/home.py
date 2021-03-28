@@ -5,14 +5,12 @@ import tkinter as tk
 # -- Costum Libraries -- #
 import algorithms
 
-from tkinter import Button
-from tkinter.font import Font
 from core import Game
-
-import time
-
 from .frame import BaseFrame
 
+# Home where user can select board size and start
+
+# Next where user can choose to play or see AI solving the problem
 class HomeFrame(BaseFrame):
     """
         The application home page.
@@ -32,6 +30,7 @@ class HomeFrame(BaseFrame):
             "Iterative Deepening": self.threadIterative
         }
 
+        # Play Game Button
         tk.Button(self, text="Play Game", font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
                 command= self.play, height=3, width=30).pack(pady=5)
 
@@ -40,13 +39,17 @@ class HomeFrame(BaseFrame):
                 command= algorithmsDict[key], height=3, width=30).pack(pady=5)
 
     def play(self):
-        #p = PlayerGame()
-        #thread = p.play
-        #thread.start()
         self.controller.routePlayerGame()
 
     def threadAStar(self):
-        thread = algorithms.AStar(self.setState)
+        matrix = [1, 2, 3, 4, 5, 6, 7, 8, 9,
+                    1, 1, 1, 2, 1, 3, 1, 4, 1, 
+                    5, 1, 6, 1, 7, 1, 8, 1, 9]
+        columns = 9
+        rows = 3
+        game = Game(0, 0, rows, columns, matrix)
+
+        thread = algorithms.AStar(game, self.setState)
         thread.start()
         self.controller.routeShowResultsFrame()
 
@@ -61,7 +64,14 @@ class HomeFrame(BaseFrame):
         self.controller.routeShowResultsFrame()
 
     def threadGreedySearch(self):
-        thread = algorithms.GreedySearch(self.setState)
+        gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
+                    1, 1, 1, 2, 1, 3, 1, 4, 1, 
+                    5, 1, 6, 1, 7, 1, 8, 1, 9]
+        columns = 9
+        rows = 3
+        game = Game(0, 0, rows, columns, gameState)
+
+        thread = algorithms.GreedySearch(game, self.setState)
         thread.start()
         self.controller.routeShowResultsFrame()
 

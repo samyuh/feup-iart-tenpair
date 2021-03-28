@@ -1,15 +1,11 @@
 # -- Imports -- #
 # -- External Libraries -- #
 import tkinter as tk
+import time
 
 # -- Costum Libraries -- #
 import algorithms
-
-from tkinter import Button
-from tkinter.font import Font
 from core import Game
-
-import time
 from .frame import BaseFrame
 
 class ShowResultsFrame(BaseFrame):
@@ -31,17 +27,13 @@ class ShowResultsFrame(BaseFrame):
         self.update_GUI()
 
         # Next Move Button
-        self.moveBtn = Button(self, text="Next Move", command = self.next_move, font='Roboto 11 bold', fg='#ffffff', bg='#1D8EA0')
+        self.moveBtn = tk.Button(self, text="Next Move", command = self.next_move, font='Roboto 11 bold', fg='#ffffff', bg='#1D8EA0')
         self.moveBtn.place(relx=0.7, y=45)
         self.moveBtn.config(highlightbackground='#1D8EA0')
 
     def create_widgets(self):
         """Create the base widgets for the frame."""
-        
-        """
-        frame2_title = tk.Label(self, text='Processing Nodes', font='times 35', bg='light blue')
-        frame2_title.pack(fill='both', expand=True)
-        """
+    
         self.loading = True
         self.loadingNext = 0
         
