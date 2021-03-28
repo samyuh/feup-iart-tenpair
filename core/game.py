@@ -12,7 +12,6 @@ class Game:
         self.previousState = previousState
         self.pair = None
        
-
     def __gt__(self, other):
         return self.heuristic > other.heuristic
     
