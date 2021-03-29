@@ -9,6 +9,9 @@ from core import Game
 from .frame import BaseFrame
 
 class ShowResultsFrame(BaseFrame):
+    """
+    Class for displaying the game Result in a frame
+    """
     def setState(self, state):
         self.loading = False
         self.clearFrame()

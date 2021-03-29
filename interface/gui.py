@@ -63,6 +63,13 @@ class PythonGUI(tk.Tk):
         self.routeHomeFrame()
 
     def canvas_bind(self,e):
+        """
+        Binds the canvas to the e parameter
+
+        Parameters
+        ----------
+        e
+        """
         self.my_canvas.itemconfig(self.canvas_window , width=e.width)
         self.my_canvas.configure(scrollregion = self.my_canvas.bbox("all"))
 

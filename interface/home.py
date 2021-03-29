@@ -39,9 +39,15 @@ class HomeFrame(BaseFrame):
                 command= algorithmsDict[key], height=3, width=30).pack(pady=5)
 
     def play(self):
+        """
+        Method for initialzing execution
+        """
         self.controller.routePlayerGame()
 
     def threadAStar(self):
+        """
+        Method for initializing the A* thread
+        """
         matrix = [1, 2, 3, 4, 5, 6, 7, 8, 9,
                     1, 1, 1, 2, 1, 3, 1, 4, 1, 
                     5, 1, 6, 1, 7, 1, 8, 1, 9]
@@ -54,16 +60,25 @@ class HomeFrame(BaseFrame):
         self.controller.routeShowResultsFrame()
 
     def threadBreathFirstSearch(self):
+        """
+        Method for initializing the Breadth First Search thread
+        """
         thread = algorithms.BreathFirstSearch(self.setState)
         thread.start()
         self.controller.routeShowResultsFrame()
 
     def threadDepthFirstSearch(self):
+        """
+        Method for initializing the Depth First Search thread
+        """
         thread = algorithms.DepthFirstSearch(self.setState)
         thread.start()
         self.controller.routeShowResultsFrame()
 
     def threadGreedySearch(self):
+        """
+        Method for initializing the Greedy Algorithm thread
+        """
         gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
                     1, 1, 1, 2, 1, 3, 1, 4, 1, 
                     5, 1, 6, 1, 7, 1, 8, 1, 9]
@@ -76,9 +91,20 @@ class HomeFrame(BaseFrame):
         self.controller.routeShowResultsFrame()
 
     def threadIterative(self):
+        """
+        Method for initializing the Iterative Deepening thread
+        """
         thread = algorithms.IterativeDeepening(self.setState)
         thread.start()
         self.controller.routeShowResultsFrame()
 
     def setState(self, game):
+        """
+        Method for setting the current state of the interface
+
+        Parameters
+        ----------
+        game : Game
+            sets current Game to game
+        """
         self.controller.frames[self.controller.getShowResultsFrame()].setState(game)

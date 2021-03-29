@@ -17,7 +17,7 @@ class GreedySearch(threading.Thread):
         """
         Constructor method for initializing the Greedy Search Algorithm
 
-        Attributes
+        Parameters
         ----------
 
         game : Game
@@ -34,7 +34,7 @@ class GreedySearch(threading.Thread):
         """
         Calculates the game heuristic, based on the ammount of pairs avaliable on the board.
 
-        Attributes
+        Parameters
         ----------
         matrix : list of int 
             flattened list of the game State.

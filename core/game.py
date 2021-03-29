@@ -6,7 +6,7 @@ class Game:
         """
         Constructor for Game object, indicating the board, all its properties, and also storing the precious Game, if it exists
 
-        Attributes
+        Parameters
         ----------
 
         moves : list of moves
@@ -36,7 +36,7 @@ class Game:
         """
         Method for overloading Game object comparison
 
-        Attributes
+        Parameters
         ----------
         other : Game
             other game Object to compare the current Game with
@@ -52,7 +52,7 @@ class Game:
         """
         Method for overloading Game object equality comparison
 
-        Attributes
+        Parameters
         ----------
         other : Game
             other game Object to compare the current Game with
@@ -139,7 +139,7 @@ class Game:
         """
         Method for removing a specific given pair
 
-        Attributes
+        Parameters
         ----------
         coordsA : int
             value for the position of the first number to be removed

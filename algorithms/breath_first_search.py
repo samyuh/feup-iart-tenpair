@@ -17,7 +17,7 @@ class BreathFirstSearch(threading.Thread):
         """
         Constructor method for initializing the Breadth First Search algorithm
 
-        Attributes
+        Parameters
         ----------
         callback : Callback
             callback used to return the gamestate to the caller thread after if shutsdown

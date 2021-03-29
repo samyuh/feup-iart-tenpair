@@ -17,7 +17,7 @@ class IterativeDeepening(threading.Thread):
         """
         Constructor method for initializing theIterative Deepening algorithm
 
-        Attributes
+        Parameters
         ----------
         callback : Callback
             callback used to return the gamestate to the caller thread after if shutsdown
@@ -49,7 +49,7 @@ class IterativeDeepening(threading.Thread):
         """
         Calculates the game heuristic, based on the ammount of pairs avaliable on the board.
 
-        Attributes
+        Parameters
         ----------
         matrix : list of int 
             flattened list of the game State.

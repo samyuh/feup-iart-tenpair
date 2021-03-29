@@ -7,7 +7,7 @@ class Logic:
         """
         Static Method that allows executing the "Deal" Move of the "Ten Pair" Game
 
-        Attributes
+        Parameters
         ----------
         game : Game
             executes the Deal Move on this game 
@@ -23,7 +23,7 @@ class Logic:
     def validMove(game, index1, index2):
         """
         Static Method that checks if a move is valid
-        Attributes
+        Parameters
         ----------
         game : Game
             game object with the game state matrix
@@ -71,7 +71,7 @@ class Logic:
         """
         Static Method for returning all the current possible moves of a Game object
 
-        Attributes
+        Parameters
         ----------
         game : Game
             game object with the game state matrix

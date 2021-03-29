@@ -17,7 +17,7 @@ class DepthFirstSearch(threading.Thread):
         """
         Constructor method for initializing the Depth First Search algorithm
 
-        Attributes
+        Parameters
         ----------
         callback : Callback
             callback used to return the gamestate to the caller thread after if shutsdown

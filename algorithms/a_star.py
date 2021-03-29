@@ -20,7 +20,7 @@ class AStar(threading.Thread):
         """
         Constructor method for initializing the A* algorithm
 
-        Attributes
+        Parameters
         ----------
 
         game : Game
@@ -38,7 +38,7 @@ class AStar(threading.Thread):
         """
         Calculates the game heuristic, based on the ammount of pairs avaliable on the board.
 
-        Attributes
+        Parameters
         ----------
         matrix : list of int 
             flattened list of the game State.
