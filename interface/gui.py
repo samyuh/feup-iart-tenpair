@@ -1,5 +1,6 @@
 # Tkinter
 import tkinter as tk
+import functools
 
 # Custom imports
 from .home import HomeFrame
@@ -19,7 +20,7 @@ class PythonGUI(tk.Tk):
         self.title("Tenpair Game") 
         self.create_widgets()
         self.resizable(2560, 1440)
-        self.minsize(1100, 700)
+        self.minsize(1100, 800)
 
     def create_widgets(self):
         """
@@ -40,6 +41,9 @@ class PythonGUI(tk.Tk):
         # Configure canvas
         self.my_canvas.configure(yscrollcommand = my_scrollbar.set)
         self.my_canvas.bind('<Configure>', self.canvas_bind)
+        self.my_canvas.bind_all("<MouseWheel>", self._on_mousewheel_w)
+        self.my_canvas.bind_all("<Button-4>", functools.partial(self._on_mousewheel, scroll=-1))
+        self.my_canvas.bind_all("<Button-5>", functools.partial(self._on_mousewheel, scroll=1))
 
         # Create Main Frame
         self.container = tk.Frame(self.my_canvas)
@@ -75,3 +79,9 @@ class PythonGUI(tk.Tk):
 
     def getShowResultsFrame(self):
         return ShowResultsFrame
+    
+    def _on_mousewheel(self, event, scroll):
+        self.my_canvas.yview_scroll(scroll, "units")
+
+    def _on_mousewheel_w(self, event):
+        self.my_canvas.yview_scroll(int(-1*(event.delta/120)), "units")
