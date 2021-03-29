@@ -32,12 +32,12 @@ class IterativeDeepening(threading.Thread):
         This algorithm runs a depth first search Algorithm with incremental depth increase until the solution is found
         """
         start = time.time()
-        for i in range(1, 28):
-            gameState = [1, 2, 3, 4, 5, 6,
-                    1, 1, 1, 2, 1, 3,
-                    ]
-            columns = 6
-            rows = 2
+        for i in range(1, 30):
+            gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
+                    1, 1, 1, 2, 1, 3, 1, 4, 1, 
+                    5, 1, 6, 1, 7, 1, 8, 1, 9]
+            columns = 9
+            rows = 3
             game = Game(0, 0, rows, columns, gameState)
             game.heuristic = self.heuristic(gameState)
             print("depth", i ,"attempt") 
@@ -81,11 +81,7 @@ class IterativeDeepening(threading.Thread):
                 return False
             # Next GameState
             game = queue.pop()
-            #game.printGame()
-
-            
-            if (game.moves + 1) == depth:
-                continue  
+            #game.printGame() 
 
             # Found a solution [Empty Matrix]
             if game.isEmpty():
@@ -103,6 +99,10 @@ class IterativeDeepening(threading.Thread):
                 #removePair = game.removePair
 
                 newGameMoves = game.moves + 1
+                
+                if (newGameMoves) == depth:
+                    continue 
+
                 for operation in operationList:
                     newGame = Game(newGameMoves,game.dealValue, game.rows, game.columns, game.matrix.copy(), game)
                     newGame.removePair(operation[0], operation[1])
