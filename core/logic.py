@@ -7,8 +7,8 @@ class Logic:
         # One dimension array of game matrix without Null elements 
         flattenMatrix = [element for element in game.matrix if element != None]
 
-        game.matrix.extend(flattenMatrix)
-        game.rows = len(game.matrix) // 9 
+        game.matrix.extend(flattenMatrix)       
+        game.rows = len(game.matrix)// game.columns + (1 if len(game.matrix) % game.columns != 0 else 0)
 
     @staticmethod
     def validMove(game, index1, index2):
@@ -24,16 +24,16 @@ class Logic:
         if space == [None] * len(space):
             return True
         
-        columnNumber = index1 % 9
-        columnNumber2 = index2 % 9
+        columnNumber = index1 % game.columns
+        columnNumber2 = index2 % game.columns
 
         if columnNumber != columnNumber2:
             return False
 
         column = [game.matrix[columnNumber + i*game.columns] for i in range(game.rows) if columnNumber + i*game.columns < len(game.matrix)]
 
-        row1 = index1 // 9
-        row2 = index2 // 9
+        row1 = index1 // game.columns
+        row2 = index2 // game.columns
 
         spaceRow = column[row2+1:row1]
         if spaceRow == [None] * len(spaceRow):

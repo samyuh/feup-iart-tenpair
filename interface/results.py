@@ -146,10 +146,9 @@ class ShowResultsFrame(BaseFrame):
 
     def extend_board(self,state):
         prev_rows = len(self.cells)
-        prev_cols = len(self.cells[0])
 
         # Number of rows to add
-        extend_rows = (len(state.matrix) - prev_rows * prev_cols) // state.columns + 1
+        extend_rows = state.rows - prev_rows
 
         for i in range(prev_rows, prev_rows + extend_rows):
             row = []
