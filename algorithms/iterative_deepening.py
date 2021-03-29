@@ -15,7 +15,7 @@ class IterativeDeepening(threading.Thread):
     """
     def __init__(self, callback=lambda: None):
         """
-        Constructor method for initializing the Breadth First Search algorithm
+        Constructor method for initializing theIterative Deepening algorithm
 
         Attributes
         ----------
