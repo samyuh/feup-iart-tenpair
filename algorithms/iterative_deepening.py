@@ -29,6 +29,7 @@ class IterativeDeepening(threading.Thread):
             if (self.iterativeDeepeningAux(game, i)):
                 end = time.time()
                 print("Time elapsed: {}".format(end - start))
+                break
 
     def greedyHeuristic(self, matrix):
         return len([element for element in matrix if element !=  None]) / 2
