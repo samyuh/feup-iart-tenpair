@@ -65,12 +65,16 @@ class PlayerGame(BaseFrame):
         if not self.runningHint:
             self.runningHint = True
             thread = algorithms.GreedySearch(self.game, self.getNextMove)
-            thread.start()
-
-            print("Hint!")
-            
+            thread.start()        
 
     def playerMove(self, i, j):
+        index = i * 9 + j
+        if index > len(self.game.matrix) - 1:
+            return
+
+        if self.game.matrix[index] == None:
+            return 
+
         if self.selected == None:
             self.cells[i][j]["frame"].configure(bg="#7BB9C2")
             self.cells[i][j]["number"].configure(bg="#7BB9C2")
@@ -134,8 +138,8 @@ class PlayerGame(BaseFrame):
                 )
                 
                 cell_frame.grid(row=i, column=j, padx=5, pady=5)
-                cell_number = tk.Button(self.main_grid, bg="#F0F0F0", command = lambda i=i, j=j: self.playerMove(i, j), font='Roboto 18 bold', fg='#212121')
-                cell_number.grid(row=i,column=j)
+                cell_number = tk.Button(self.main_grid, bg="#F0F0F0", command = lambda i=i, j=j: self.playerMove(i, j), font='Roboto 18 bold', fg='#212121', borderwidth=0, highlightthickness=0)
+                cell_number.grid(row=i,column=j, sticky = tk.W + tk.S + tk.N + tk.E, padx = 8, pady = 8)
                 cell_data = {"frame": cell_frame, "number": cell_number}
                 row.append(cell_data)
             self.cells.append(row)
@@ -189,7 +193,7 @@ class PlayerGame(BaseFrame):
                 self.cells[row][col]["number"].configure(text="", bg="#F0F0F0")
             else:                
                 self.cells[row][col]["frame"].configure(bg="#F0F0F0")
-                self.cells[row][col]["number"].configure(text = str(cell_value))
+                self.cells[row][col]["number"].configure(text = str(cell_value), bg="#F0F0F0")
 
         # Update moves
         self.move_count = state.moves
@@ -223,8 +227,8 @@ class PlayerGame(BaseFrame):
                     height = 100
                 )
                 cell_frame.grid(row=i, column=j, padx=5, pady=5)
-                cell_number = tk.Button(self.main_grid, bg="#F0F0F0", command = lambda i=i, j=j: self.playerMove(i, j), font='Roboto 18 bold', fg='#212121')
-                cell_number.grid(row=i,column=j)
+                cell_number = tk.Button(self.main_grid, bg="#F0F0F0", command = lambda i=i, j=j: self.playerMove(i, j), font='Roboto 18 bold', fg='#212121', borderwidth=0, highlightthickness=0)
+                cell_number.grid(row=i,column=j, sticky = tk.W + tk.S + tk.N + tk.E, padx = 8, pady = 8)
                 cell_data = {"frame": cell_frame, "number": cell_number}
                 row.append(cell_data)
             self.cells.append(row)
