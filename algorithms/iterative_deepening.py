@@ -10,8 +10,9 @@ from core.game import Game
 from core.logic import Logic
 
 class IterativeDeepening(threading.Thread):
-    def __init__(self, callback=lambda: None):
+    def __init__(self, game, callback=lambda: None):
         threading.Thread.__init__(self)
+        self.game = game
         self.callback = callback
 
     def run(self):

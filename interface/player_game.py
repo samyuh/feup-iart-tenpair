@@ -9,16 +9,15 @@ from core import Game, Logic
 from .frame import BaseFrame
 
 class PlayerGame(BaseFrame):
+    def initGame(self, game):
+        self.game = game
+
     def start_game(self):
         self.currentHint = [0, 2]
         self.selected = None
         self.runningHint = False
         self.loading = False
         self.clearFrame()
-
-        self.game = Game(0,0,3,9,[1, 2, 3, 4, 5, 6, 7, 8, 9,
-                                    1, 1, 1, 2, 1, 3, 1, 4, 1, 
-                                    5, 1, 6, 1, 7, 1, 8, 1, 9])
         self.move_count = 0
 
         # todo: adjust frame size as desired
@@ -52,14 +51,19 @@ class PlayerGame(BaseFrame):
 
     def getNextMove(self, states):
         self.runningHint = False
-        for i in states:
-            print(i.matrix)
+        index0_i = states[1].pair[0] // self.game.columns
+        index0_j = states[1].pair[0] % self.game.columns
 
-        self.cells[0][0]["frame"].configure(bg="#FFFF00")
-        self.cells[0][0]["number"].configure(bg="#FFFF00")
+        index1_i = states[1].pair[1] // self.game.columns
+        index1_j = states[1].pair[1] % self.game.columns
 
-        self.cells[0][1]["frame"].configure(bg="#FFFF00")
-        self.cells[0][1]["number"].configure(bg="#FFFF00")
+        print(states[1].pair)
+
+        self.cells[index0_i][index0_j]["frame"].configure(bg="#FFFF00")
+        self.cells[index0_i][index0_j]["number"].configure(bg="#FFFF00")
+
+        self.cells[index1_i][index1_j]["frame"].configure(bg="#FFFF00")
+        self.cells[index1_i][index1_j]["number"].configure(bg="#FFFF00")
 
     def computerHint(self):
         if not self.runningHint:

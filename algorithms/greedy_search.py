@@ -12,19 +12,20 @@ from core.logic import Logic
 class GreedySearch(threading.Thread):
     def __init__(self, game, callback=lambda: None):
         threading.Thread.__init__(self)
-        self.callback = callback
         self.game = game
+        self.callback = callback
 
     def heuristic(self, matrix):
         return len([element for element in matrix if element !=  None]) / 2
 
     def run(self):
         """
-        Greedy Algorithm
+        Running Greedy Algorithm
         """
-        game = self.game
         # Priority Queue to order by heuristic
         queue = PriorityQueue()
+        game = self.game
+        
         queue.put(game)
 
         visited = set()

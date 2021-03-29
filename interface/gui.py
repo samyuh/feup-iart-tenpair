@@ -7,6 +7,8 @@ from .home import HomeFrame
 from .player_game import PlayerGame
 from .results import ShowResultsFrame
 
+from core import Game
+
 class PythonGUI(tk.Tk):
     """
     The main window of the GUI.
@@ -22,10 +24,12 @@ class PythonGUI(tk.Tk):
         self.resizable(2560, 1440)
         self.minsize(1100, 800)
 
+
+
     def create_widgets(self):
         """
         Create the widgets for the frame.
-        """             
+        """            
         #  Frame Container
         # Create to check if user is on windows/linux
         #self.attributes('-zoomed', True)
@@ -67,11 +71,29 @@ class PythonGUI(tk.Tk):
         self.my_canvas.configure(scrollregion = self.my_canvas.bbox("all"))
 
     def routeHomeFrame(self):
+        # Create Game Board
+        matrix = [9, 3, 8, 7, 3, 7,
+                    2, 1, 1, 8, 9, 2]
+
+        columns = 6
+        rows = 2
+        game = Game(0, 0, rows, columns, matrix) 
+
+        self.frames[HomeFrame].initGame(game)
         self.frames[HomeFrame].tkraise()
 
     def routePlayerGame(self):
-        self.frames[PlayerGame].tkraise()
+        # Create Game Board
+        matrix = [9, 3, 8, 7, 3, 7,
+                    2, 1, 1, 8, 9, 2]
+
+        columns = 6
+        rows = 2
+        game = Game(0, 0, rows, columns, matrix) 
+
+        self.frames[PlayerGame].initGame(game)
         self.frames[PlayerGame].start_game()
+        self.frames[PlayerGame].tkraise()
 
     def routeShowResultsFrame(self):
         self.frames[ShowResultsFrame].tkraise()

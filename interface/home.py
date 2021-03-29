@@ -4,17 +4,14 @@ import tkinter as tk
 
 # -- Costum Libraries -- #
 import algorithms
-
-from core import Game
 from .frame import BaseFrame
 
-# Home where user can select board size and start
-
-# Next where user can choose to play or see AI solving the problem
 class HomeFrame(BaseFrame):
     """
         The application home page.
     """
+    def initGame(self, game):
+        self.game = game
 
     def create_widgets(self):
         """Create the base widgets for the frame."""
@@ -42,41 +39,27 @@ class HomeFrame(BaseFrame):
         self.controller.routePlayerGame()
 
     def threadAStar(self):
-        matrix = [1, 2, 3, 4, 5, 6, 7, 8, 9,
-                    1, 1, 1, 2, 1, 3, 1, 4, 1, 
-                    5, 1, 6, 1, 7, 1, 8, 1, 9]
-        columns = 9
-        rows = 3
-        game = Game(0, 0, rows, columns, matrix)
-
-        thread = algorithms.AStar(game, self.setState)
+        thread = algorithms.AStar(self.game, self.setState)
         thread.start()
         self.controller.routeShowResultsFrame()
 
     def threadBreathFirstSearch(self):
-        thread = algorithms.BreathFirstSearch(self.setState)
+        thread = algorithms.BreathFirstSearch(self.game, self.setState)
         thread.start()
         self.controller.routeShowResultsFrame()
 
     def threadDepthFirstSearch(self):
-        thread = algorithms.DepthFirstSearch(self.setState)
+        thread = algorithms.DepthFirstSearch(self.game, self.setState)
         thread.start()
         self.controller.routeShowResultsFrame()
 
     def threadGreedySearch(self):
-        gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
-                    1, 1, 1, 2, 1, 3, 1, 4, 1, 
-                    5, 1, 6, 1, 7, 1, 8, 1, 9]
-        columns = 9
-        rows = 3
-        game = Game(0, 0, rows, columns, gameState)
-
-        thread = algorithms.GreedySearch(game, self.setState)
+        thread = algorithms.GreedySearch(self.game, self.setState)
         thread.start()
         self.controller.routeShowResultsFrame()
 
     def threadIterative(self):
-        thread = algorithms.IterativeDeepening(self.setState)
+        thread = algorithms.IterativeDeepening(self.game, self.setState)
         thread.start()
         self.controller.routeShowResultsFrame()
 

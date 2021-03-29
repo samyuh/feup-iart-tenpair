@@ -10,16 +10,10 @@ from core.game import Game
 from core.logic import Logic
 
 class BreathFirstSearch(threading.Thread):
-    def __init__(self, callback=lambda: None):
+    def __init__(self, game, callback=lambda: None):
         threading.Thread.__init__(self)
+        self.game = game
         self.callback = callback
-
-        gameState = [1, 2, 3, 4, 5, 6,
-                    1, 1, 1, 2, 1, 3,
-                    ]
-        columns = 6
-        rows = 2
-        self.game = Game(0, 0, rows, columns, gameState)
 
     def run(self):
         """
@@ -62,7 +56,7 @@ class BreathFirstSearch(threading.Thread):
                         visited.add(repr(newGame.matrix))
                         append(newGame)
                 
-                if game.dealValue < 1:
+                if game.dealValue < 2:
                     gameDeal = Game(game.moves, game.dealValue + 1, game.rows, game.columns,game.matrix.copy(), game)
                     Logic.deal(gameDeal)
                     if repr(gameDeal.matrix) not in visited:

@@ -10,16 +10,10 @@ from core.game import Game
 from core.logic import Logic
 
 class DepthFirstSearch(threading.Thread):
-    def __init__(self, callback=lambda: None):
+    def __init__(self, game, callback=lambda: None):
         threading.Thread.__init__(self)
+        self.game = game
         self.callback = callback
-
-        gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
-                    1, 1, 1, 2, 1, 3, 1, 4, 1, 
-                    5, 1, 6, 1, 7, 1, 8, 1, 9]
-        columns = 9
-        rows = 3
-        self.game = Game(0, 0, rows, columns, gameState)
 
     def run(self):
         """

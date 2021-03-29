@@ -72,4 +72,4 @@ class Game:
     def removePair(self, coordsA, coordsB):
         self.pair = [coordsA, coordsB]
         self.matrix[coordsA] = None
-        self.matrix[coordsB] = None  
+        self.matrix[coordsB] = None
