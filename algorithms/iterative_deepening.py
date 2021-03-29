@@ -10,11 +10,27 @@ from core.game import Game
 from core.logic import Logic
 
 class IterativeDeepening(threading.Thread):
+    """
+    A class used to run the Iterative Deepening Algorithm 
+    """
     def __init__(self, callback=lambda: None):
+        """
+        Constructor method for initializing the Breadth First Search algorithm
+
+        Attributes
+        ----------
+        callback : Callback
+            callback used to return the gamestate to the caller thread after if shutsdown
+                
+        """
         threading.Thread.__init__(self)
         self.callback = callback
 
     def run(self):
+        """
+        Method called to run the Iterative Deepening Algorithm
+        This algorithm runs a depth first search Algorithm with incremental depth increase until the solution is found
+        """
         start = time.time()
         for i in range(1, 28):
             gameState = [1, 2, 3, 4, 5, 6,
@@ -23,18 +39,31 @@ class IterativeDeepening(threading.Thread):
             columns = 6
             rows = 2
             game = Game(0, 0, rows, columns, gameState)
-            game.heuristic = self.greedyHeuristic(gameState)
+            game.heuristic = self.heuristic(gameState)
             print("depth", i ,"attempt") 
             if (self.iterativeDeepeningAux(game, i)):
                 end = time.time()
                 print("Time elapsed: {}".format(end - start))
 
-    def greedyHeuristic(self, matrix):
+    def heuristic(self, matrix):
+        """
+        Calculates the game heuristic, based on the ammount of pairs avaliable on the board.
+
+        Attributes
+        ----------
+        matrix : list of int 
+            flattened list of the game State.
+        Returns
+        -------
+        int
+            returns the number of avaliable pairs of the board, which is a value that represents the heuristic of a Game.
+
+        """
         return len([element for element in matrix if element !=  None]) / 2
         
     def iterativeDeepeningAux(self, game, depth):
-        """
-            Iterative Deepening Algorithm
+        """ 
+        Method used to run the algorithm iteratively by continously changing the depth if the solution is not found
         """
         # rows, columns, gameState = deal(rows, columns, gameState.copy())
         # Double Ended Queue to allow O(1) pop and append

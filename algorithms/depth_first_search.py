@@ -10,7 +10,19 @@ from core.game import Game
 from core.logic import Logic
 
 class DepthFirstSearch(threading.Thread):
+    """
+    A class used to run the Depth First Search algorithm 
+    """
     def __init__(self, callback=lambda: None):
+        """
+        Constructor method for initializing the Depth First Search algorithm
+
+        Attributes
+        ----------
+        callback : Callback
+            callback used to return the gamestate to the caller thread after if shutsdown
+                
+        """
         threading.Thread.__init__(self)
         self.callback = callback
 
@@ -23,7 +35,8 @@ class DepthFirstSearch(threading.Thread):
 
     def run(self):
         """
-            Depth First Search Algorithm
+        Method called to run the Depth First Search Algorithm
+        This algorithm traverses the possible moves of the game by starting at the root node and and exploring each branch of a game sequence as far as possible until no more moves are avaliable
         """
 
         # rows, columns, gameState = deal(rows, columns, gameState.copy())

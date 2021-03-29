@@ -10,7 +10,19 @@ from core.game import Game
 from core.logic import Logic
 
 class BreathFirstSearch(threading.Thread):
+    """
+    A class used to run the Breadth First Search algorithm 
+    """
     def __init__(self, callback=lambda: None):
+        """
+        Constructor method for initializing the Breadth First Search algorithm
+
+        Attributes
+        ----------
+        callback : Callback
+            callback used to return the gamestate to the caller thread after if shutsdown
+                
+        """
         threading.Thread.__init__(self)
         self.callback = callback
 
@@ -23,7 +35,8 @@ class BreathFirstSearch(threading.Thread):
 
     def run(self):
         """
-            Breath First Search Algorithm
+        Method called to run the Breadth First Search Algorithm.
+        This algorithm finds the solution by searching all possible moves before advancing to the next move, traversing all possibilities moves until a solution is found(if possible) 
         """
         # rows, columns, gameState = deal(rows, columns, gameState.copy())
         # Double Ended Queue to allow O(1) pop and append

@@ -10,17 +10,47 @@ from core.game import Game
 from core.logic import Logic
 
 class GreedySearch(threading.Thread):
+    """
+    A class used to run the Greedy Search Algorithm 
+    """
     def __init__(self, game, callback=lambda: None):
+        """
+        Constructor method for initializing the Greedy Search Algorithm
+
+        Attributes
+        ----------
+
+        game : Game
+            The initial Game State to run the algorithm
+        callback : Callback
+            callback used to return the gamestate to the caller thread after if shutsdown
+                
+        """
         threading.Thread.__init__(self)
         self.callback = callback
         self.game = game
 
     def heuristic(self, matrix):
+        """
+        Calculates the game heuristic, based on the ammount of pairs avaliable on the board.
+
+        Attributes
+        ----------
+        matrix : list of int 
+            flattened list of the game State.
+        Returns
+        -------
+        int
+            returns the number of avaliable pairs of the board, which is a value that represents the heuristic of a Game.
+
+        """
         return len([element for element in matrix if element !=  None]) / 2
 
     def run(self):
         """
-        Greedy Algorithm
+        Method called to run the Greedy Search Algorithm.
+        This algorithm uses an heuristic to suggest the following best move and calculate and aproximate optimal solution
+
         """
         game = self.game
         # Priority Queue to order by heuristic
