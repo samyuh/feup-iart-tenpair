@@ -142,7 +142,12 @@ class ShowResultsFrame(BaseFrame):
     def over(self):
         if self.actual_state == len(self.states):
             self.moveBtn['text']='Quit'
-            self.moveBtn['command'] = lambda: self.controller.routeHomeFrame()
+            self.moveBtn['command'] = self.test
+
+    def test(self):
+        self.loading = True
+        self.controller.routeHomeFrame()
+        self.clearFrame()
 
     def extend_board(self,state):
         prev_rows = len(self.cells)
