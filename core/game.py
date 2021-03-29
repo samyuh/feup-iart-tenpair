@@ -44,7 +44,7 @@ class Game:
         Returns
         -------
         boolean
-            Returns true if the current object heuristic is greater than the other Object, false otherwise
+            Returns True if the current object heuristic is greater than the other Object, False otherwise
         """
         return self.heuristic > other.heuristic
     
@@ -60,7 +60,7 @@ class Game:
         Returns
         -------
         bool
-            Returns true if the current object heuristic is equal to the other Object, false otherwise
+            Returns True if the current object heuristic is equal to the other Object, False otherwise
         """
         return self.heuristic == other.heuristic
 
@@ -76,7 +76,7 @@ class Game:
 
         Returns
         -------
-        bool : true if the Game matrix is empty, false otherwise
+        bool : True if the Game matrix is empty, False otherwise
         """
 
         if self.matrix == [None] * len(self.matrix):
