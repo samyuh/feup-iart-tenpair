@@ -57,7 +57,6 @@ class Game:
 
     def printGameSequence(self):
         gameSequence = self.getFullGame()
-        print(len(gameSequence))
         
         for i in gameSequence:
             print()

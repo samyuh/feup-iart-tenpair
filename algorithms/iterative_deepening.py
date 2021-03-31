@@ -19,15 +19,11 @@ class IterativeDeepening(threading.Thread):
         start = time.time()
         for i in range(1, 999):
             game = Game(0, 0, self.game.rows, self.game.columns, self.game.matrix)
-            game.heuristic = self.greedyHeuristic(self.game.matrix)
             print("Depth", i ,"attempt") 
             if (self.iterativeDeepeningAux(game, i)):
                 end = time.time()
                 print("Time elapsed: {}".format(end - start))
                 break
-
-    def greedyHeuristic(self, matrix):
-        return len([element for element in matrix if element !=  None]) / 2
         
     def iterativeDeepeningAux(self, game, depth):
         """
@@ -49,7 +45,7 @@ class IterativeDeepening(threading.Thread):
             #game.printGame()
 
             
-            if (game.moves + 1) == depth:
+            if game.moves == depth:
                 continue  
 
             # Found a solution [Empty Matrix]
