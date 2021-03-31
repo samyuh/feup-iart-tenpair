@@ -17,14 +17,14 @@ class IterativeDeepening(threading.Thread):
         self.game = game
         self.callback = callback
 
-    def heuristic(self, matrix):
+    def heuristic(self, game, matrix):
         return len([element for element in matrix if element !=  None]) / 2
 
     def run(self):
         start = time.time()
 
-        estimatedCost = self.heuristic(self.game.matrix)
-         # Priority Queue to order by heuristic
+        estimatedCost = self.heuristic(self.game,self.game.matrix)
+        # Priority Queue to order by heuristic
 
         while True:
             distance = self.search([self.game,], 0, estimatedCost)
@@ -38,11 +38,11 @@ class IterativeDeepening(threading.Thread):
 
         
     def search(self, path, distance, estimatedCost):
-        game = path.pop()
+        game = path.pop(0)
         if game.isEmpty():
             return 0
 
-        estimate = distance + self.heuristic(game.matrix)
+        estimate = distance + self.heuristic(game,game.matrix)
         if estimate > estimatedCost:
              return estimate
 
@@ -54,21 +54,22 @@ class IterativeDeepening(threading.Thread):
         for operation in operationList:
             newGame = Game(newGameMoves, game.dealValue, game.rows, game.columns, game.matrix.copy(), game)
             newGame.removePair(operation[0], operation[1])
-            test.append(newGame)
+            test.append([newGame, 1])
 
         if game.dealValue < 1:
             gameDeal = Game(game.moves, game.dealValue + 1, game.rows, game.columns,game.matrix.copy(), game)
             Logic.deal(gameDeal)
-            test.append(gameDeal)
+            test.append([gameDeal, 0])
 
-        t = self.search(test, distance + 1, estimatedCost)
-        if t == 0:
-            return 0
-        if t < minValue:
+        for i in test:
+            t = self.search([i[0],], distance + i[1], estimatedCost)
+            if t == 0:
+                print(distance)
+                return 0
+            if t < minValue:
+                print(t)
+                i[0].printGame()
+                minValue = t
             minValue = t
-        minValue = t
 
-        """
-
-        """
         return minValue
