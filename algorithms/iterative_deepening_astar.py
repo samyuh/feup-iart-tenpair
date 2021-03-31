@@ -30,7 +30,7 @@ class IterativeDeepening(threading.Thread):
          # Priority Queue to order by heuristic
 
         while True:
-            distance = self.search([self.game,], 0, estimatedCost)
+            distance = self.search(self.game, 0, estimatedCost)
             if distance == 0:
                 print("Found Solution")
                 return 
@@ -40,8 +40,10 @@ class IterativeDeepening(threading.Thread):
             estimatedCost = distance
 
         
-    def search(self, path, distance, estimatedCost):
-        game = path.pop()
+    def search(self, game, distance, estimatedCost):
+        #print("here")
+        
+        #game.printGame()
         if game.isEmpty():
             return 0
 
@@ -53,20 +55,14 @@ class IterativeDeepening(threading.Thread):
 
         operationList = Logic.getAllMoves(game)
         newGameMoves = game.moves + 1
-        test = []
         for operation in operationList:
             newGame = Game(newGameMoves, game.dealValue, game.rows, game.columns, game.matrix.copy(), game)
             newGame.removePair(operation[0], operation[1])
-            test.append(newGame)
-
-        t = self.search(test, distance + 1, estimatedCost)
-        if t == 0:
-            return 0
-        if t < minValue:
+            t = self.search(newGame, distance + 1, estimatedCost)
+            if t == 0:
+                return 0
+            if t < minValue:
+                minValue = t
             minValue = t
-        minValue = t
 
-        """
-
-        """
         return minValue

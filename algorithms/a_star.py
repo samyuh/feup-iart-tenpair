@@ -3,8 +3,6 @@
 import time
 import threading
 
-
-
 from queue import PriorityQueue
 
 # Personal Libraries
@@ -14,7 +12,11 @@ from core.logic import Logic
 class AStar(threading.Thread):
     def __init__(self, game, callback=lambda: None):
         threading.Thread.__init__(self)
-        self.game = game
+        gameDeal = Game(game.moves, game.dealValue + 1, game.rows, game.columns, game.matrix.copy(), game)
+        Logic.deal(gameDeal)
+        gameDeal.heuristic = game.moves + self.heuristic(gameDeal.matrix.copy())
+
+        self.game = gameDeal
         self.callback = callback
 
     def heuristic(self, matrix):
