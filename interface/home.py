@@ -36,7 +36,7 @@ class HomeFrame(BaseFrame):
                 command= algorithmsDict[key], height=3, width=30).pack(pady=5)
 
     def play(self):
-        self.controller.routePlayerGame()
+        self.controller.routePlayerGame(self.game)
 
     def threadAStar(self):
         thread = algorithms.AStar(self.game, self.setState)

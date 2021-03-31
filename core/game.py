@@ -19,10 +19,7 @@ class Game:
         return self.heuristic == other.heuristic
 
     def __repr__(self):
-        return str(self)
-
-    def __str__(self):
-        return str(self)
+        return repr(self.matrix)
 
     def isEmpty(self):
         """

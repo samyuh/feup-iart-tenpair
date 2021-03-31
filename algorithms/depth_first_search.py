@@ -34,15 +34,14 @@ class DepthFirstSearch(threading.Thread):
             
             # Next GameState
             game = queue.pop()
-            #game.printGame()
 
             # Found a solution [Empty Matrix]
             if game.isEmpty():
-                test = game.getFullGame()
-                self.callback(test)
-                game.printGameSequence()
                 print("Found a solution: ")
                 print("Total Moves: {}".format(game.moves))
+                print("Time elapsed: {}".format(time.time() - start))
+
+                self.callback(game.getFullGame())
                 break
             # Get available moves and add them to the queue
             else:
@@ -66,7 +65,5 @@ class DepthFirstSearch(threading.Thread):
                         visited.add(repr(gameDeal.matrix))
                         append(gameDeal)
 
-        end = time.time()
-        print("Time elapsed: {}".format(end - start))
-        #a = game.getFullGame()
+        
         

@@ -146,7 +146,7 @@ class ShowResultsFrame(BaseFrame):
 
     def test(self):
         self.loading = True
-        self.controller.routeHomeFrame()
+        self.controller.routeBoardSelect()
         self.clearFrame()
 
     def extend_board(self,state):

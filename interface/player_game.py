@@ -29,7 +29,7 @@ class PlayerGame(BaseFrame):
         self.update_GUI()
 
         # Quit Button
-        self.quitBtn = tk.Button(self, text="Quit", command = lambda self=self: self.controller.routeHomeFrame() , font='Roboto 11 bold', fg='#ffffff', bg='#1D8EA0')
+        self.quitBtn = tk.Button(self, text="Quit", command = lambda self=self: self.controller.routeBoardSelect() , font='Roboto 11 bold', fg='#ffffff', bg='#1D8EA0')
         self.quitBtn.place(relx=0.6, y=45)
         self.quitBtn.config(highlightbackground='#1D8EA0')
 
@@ -72,7 +72,7 @@ class PlayerGame(BaseFrame):
             thread.start()        
 
     def playerMove(self, i, j):
-        index = i * 9 + j
+        index = i * self.game.columns + j
         if index > len(self.game.matrix) - 1:
             return
 
@@ -95,8 +95,8 @@ class PlayerGame(BaseFrame):
             # Verify if it is a pair
             i0 = self.selected[0][0]
             j0 = self.selected[0][1]
-            previousIndex = i0 * 9 + j0
-            currentIndex = i * 9 + j
+            previousIndex = i0 * self.game.columns + j0
+            currentIndex = i * self.game.columns + j
             # Bigger should be always the first
             if (previousIndex < currentIndex):
                 previousIndex, currentIndex = currentIndex, previousIndex

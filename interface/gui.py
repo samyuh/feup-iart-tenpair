@@ -6,6 +6,7 @@ import functools
 from .home import HomeFrame
 from .player_game import PlayerGame
 from .results import ShowResultsFrame
+from .board_select import BoardSelect
 
 from core import Game
 
@@ -59,38 +60,25 @@ class PythonGUI(tk.Tk):
 
         #   Frames
         self.frames = {}
-        for f in (HomeFrame, PlayerGame, ShowResultsFrame): # defined subclasses of BaseFrame
+        for f in (BoardSelect, HomeFrame, PlayerGame, ShowResultsFrame): # defined subclasses of BaseFrame
             frame = f(self.container, self)
             frame.grid(row = 0, column = 0, sticky = "nsew")
             self.frames[f] = frame
         
-        self.routeHomeFrame()
+        self.routeBoardSelect()
 
     def canvas_bind(self,e):
         self.my_canvas.itemconfig(self.canvas_window , width=e.width)
         self.my_canvas.configure(scrollregion = self.my_canvas.bbox("all"))
 
-    def routeHomeFrame(self):
-        # Create Game Board
-        matrix = [9, 3, 8, 7, 3, 7,
-                    2, 1, 1, 8, 9, 2]
+    def routeBoardSelect(self):
+        self.frames[BoardSelect].tkraise()
 
-        columns = 6
-        rows = 2
-        game = Game(0, 0, rows, columns, matrix) 
-
+    def routeHomeFrame(self, game):
         self.frames[HomeFrame].initGame(game)
         self.frames[HomeFrame].tkraise()
 
-    def routePlayerGame(self):
-        # Create Game Board
-        matrix = [9, 3, 8, 7, 3, 7,
-                    2, 1, 1, 8, 9, 2]
-
-        columns = 6
-        rows = 2
-        game = Game(0, 0, rows, columns, matrix) 
-
+    def routePlayerGame(self, game):
         self.frames[PlayerGame].initGame(game)
         self.frames[PlayerGame].start_game()
         self.frames[PlayerGame].tkraise()
