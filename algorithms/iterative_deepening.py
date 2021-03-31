@@ -13,11 +13,8 @@ from core.logic import Logic
 class IterativeDeepening(threading.Thread):
     def __init__(self, game, callback=lambda: None):
         threading.Thread.__init__(self)
-        gameDeal = Game(game.moves, game.dealValue + 1, game.rows, game.columns, game.matrix.copy(), game)
-        Logic.deal(gameDeal)
-        gameDeal.heuristic = game.moves + self.heuristic(gameDeal.matrix.copy())
 
-        self.game = gameDeal
+        self.game = game
         self.callback = callback
 
     def heuristic(self, matrix):
@@ -58,6 +55,11 @@ class IterativeDeepening(threading.Thread):
             newGame = Game(newGameMoves, game.dealValue, game.rows, game.columns, game.matrix.copy(), game)
             newGame.removePair(operation[0], operation[1])
             test.append(newGame)
+
+        if game.dealValue < 1:
+            gameDeal = Game(game.moves, game.dealValue + 1, game.rows, game.columns,game.matrix.copy(), game)
+            Logic.deal(gameDeal)
+            test.append(gameDeal)
 
         t = self.search(test, distance + 1, estimatedCost)
         if t == 0:
