@@ -17,18 +17,14 @@ class IterativeDeepening(threading.Thread):
 
     def run(self):
         start = time.time()
-        for i in range(1, 28):
-            gameState = [1, 2, 3, 4, 5, 6,
-                    1, 1, 1, 2, 1, 3,
-                    ]
-            columns = 6
-            rows = 2
-            game = Game(0, 0, rows, columns, gameState)
-            game.heuristic = self.greedyHeuristic(gameState)
-            print("depth", i ,"attempt") 
+        for i in range(1, 999):
+            game = Game(0, 0, self.game.rows, self.game.columns, self.game.matrix)
+            game.heuristic = self.greedyHeuristic(self.game.matrix)
+            print("Depth", i ,"attempt") 
             if (self.iterativeDeepeningAux(game, i)):
                 end = time.time()
                 print("Time elapsed: {}".format(end - start))
+                break
 
     def greedyHeuristic(self, matrix):
         return len([element for element in matrix if element !=  None]) / 2
@@ -37,9 +33,6 @@ class IterativeDeepening(threading.Thread):
         """
             Iterative Deepening Algorithm
         """
-        # rows, columns, gameState = deal(rows, columns, gameState.copy())
-        # Double Ended Queue to allow O(1) pop and append
-        # Set to check if an element was already visited in O(1)
         queue = deque([game])
         visited = set()
 
