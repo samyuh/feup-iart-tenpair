@@ -22,10 +22,16 @@ class FrameBoard(BaseFrame):
         frame1_title.pack(pady=(10, 60))
 
         # Play Game Button
-        tk.Button(self, text="Small Board", font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
+        tk.Button(self, text="6x2 Board", font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
                 command= self.small, height=3, width=55).pack(pady=5)
+
+        tk.Button(self, text="6x3 Board", font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
+                command= self.small2, height=3, width=55).pack(pady=5)
         
-        tk.Button(self, text="Normal Board", font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
+        tk.Button(self, text="9x2 Board", font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
+                command= self.medium, height=3, width=55).pack(pady=5)
+        
+        tk.Button(self, text="9x3 Board (Original)", font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
                 command= self.normal, height=3, width=55).pack(pady=5)
 
         tk.Button(self, text="Random Board (Can take to long to be solved)", font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
@@ -40,6 +46,28 @@ class FrameBoard(BaseFrame):
         game = Game(0, 0, rows, columns, matrix) 
 
         self.controller.routeFrameAlgorithm(game)
+
+    # TODO
+    def small2(self):
+        matrix = [9, 3, 8, 7, 3, 7,
+                    2, 1, 1, 8, 9, 2]
+
+        columns = 6
+        rows = 2
+        game = Game(0, 0, rows, columns, matrix) 
+
+        self.controller.routeFrameAlgorithm(game)
+
+    def medium(self):
+        matrix = [1, 2, 3, 4, 5, 6, 7, 8, 9, 
+                  1, 1, 1, 2, 1, 3, 1, 4, 1,]
+
+        columns = 9
+        rows = 2
+        game = Game(0, 0, rows, columns, matrix) 
+
+        self.controller.routeFrameAlgorithm(game)
+
 
     def normal(self):
         matrix = [1, 2, 3, 4, 5, 6, 7, 8, 9,
