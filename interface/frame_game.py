@@ -60,7 +60,7 @@ class FrameGame(BaseFrame):
         Method for initializing a game
         """
 
-        self.currentHint = [0, 2]
+        self.currentHint = []
         self.selected = None
         self.runningHint = False
         self.loading = False
@@ -98,19 +98,22 @@ class FrameGame(BaseFrame):
 
     def getNextMove(self, states):
         self.runningHint = False
+
+        if states[1].pair == None:
+            self.dealBtn.configure(bg='#FA9253')
+            return
+
         index0_i = states[1].pair[0] // self.game.columns
         index0_j = states[1].pair[0] % self.game.columns
 
         index1_i = states[1].pair[1] // self.game.columns
         index1_j = states[1].pair[1] % self.game.columns
 
-        print(states[1].pair)
+        self.cells[index0_i][index0_j]["frame"].configure(bg="#FA9253")
+        self.cells[index0_i][index0_j]["number"].configure(bg="#FA9253")
 
-        self.cells[index0_i][index0_j]["frame"].configure(bg="#FFFF00")
-        self.cells[index0_i][index0_j]["number"].configure(bg="#FFFF00")
-
-        self.cells[index1_i][index1_j]["frame"].configure(bg="#FFFF00")
-        self.cells[index1_i][index1_j]["number"].configure(bg="#FFFF00")
+        self.cells[index1_i][index1_j]["frame"].configure(bg="#FA9253")
+        self.cells[index1_i][index1_j]["number"].configure(bg="#FA9253")
 
     def computerHint(self):
         if not self.runningHint:
@@ -167,6 +170,7 @@ class FrameGame(BaseFrame):
                 return
 
             self.game.removePair(previousIndex, currentIndex)
+            self.move_count += 1
 
             i0 = self.selected[0][0]
             j0 = self.selected[0][1]
@@ -185,7 +189,7 @@ class FrameGame(BaseFrame):
             self.cells[i][j]["frame"].configure(bg="#f2f2f2")
             self.cells[i][j]["number"].configure(text = "", bg="#f2f2f2")
             self.selected = None
-
+        
         self.update_GUI()
 
     def make_GUI(self, first_state):
@@ -240,6 +244,7 @@ class FrameGame(BaseFrame):
         Execute the move Deal defined in our game
         """
         Logic.deal(self.game)
+        self.dealBtn.configure(bg='#1D8EA0')
         self.update_GUI()
         
     def clearFrame(self):
@@ -277,7 +282,6 @@ class FrameGame(BaseFrame):
                 self.cells[row][col]["number"].configure(text = str(cell_value), bg="#F0F0F0")
 
         # Update moves
-        self.move_count = state.moves
         self.moves_label.configure(text=self.move_count)
         self.update_idletasks()
 
