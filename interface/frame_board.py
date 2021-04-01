@@ -47,13 +47,13 @@ class FrameBoard(BaseFrame):
 
         self.controller.routeFrameAlgorithm(game)
 
-    # TODO
     def small2(self):
-        matrix = [9, 3, 8, 7, 3, 7,
-                    2, 1, 1, 8, 9, 2]
+        matrix = [7, 4, 4, 2, 3, 1,
+                  5 , 5, 3, 1, 9, 3,
+                  5, 2, 1, 1, 7, 3]
 
         columns = 6
-        rows = 2
+        rows = 3
         game = Game(0, 0, rows, columns, matrix) 
 
         self.controller.routeFrameAlgorithm(game)
