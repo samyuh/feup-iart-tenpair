@@ -13,7 +13,19 @@ from .frame import BaseFrame
 # Next where user can choose to play or see AI solving the problem
 class HomeFrame(BaseFrame):
     """
-        The application home page.
+    The application home page.
+
+    Attributes
+    ----------
+    frame1_title : tk.label
+      - Title lavel for the Home Page Menu
+
+    algorithmsDict : dictionary of methods
+      - dictionary with the name of the algorithm associated with the method that raised a thread that executes it
+
+    controller : PythonGUI
+      - The controlling Tk object of the interface
+        
     """
 
     def create_widgets(self):
@@ -105,6 +117,6 @@ class HomeFrame(BaseFrame):
         Parameters
         ----------
         game : Game
-            sets current Game to game
+          - sets current Game to game
         """
         self.controller.frames[self.controller.getShowResultsFrame()].setState(game)

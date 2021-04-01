@@ -9,7 +9,53 @@ from core import Game, Logic
 from .frame import BaseFrame
 
 class PlayerGame(BaseFrame):
+    """
+    Class for an object containing all Game properties and methods
+    
+    Attributes
+    ----------
+    currentHint : pair of integers in a list
+      - hint for the position of both elements that should be removed using the hint heuristic
+
+    selected : list of lists of int
+      - contains the numbers from the board currently being selected by the player
+
+    runningHint : bool
+      - Attribute used to verify if the hint for the next move has already been calculated
+
+    cells : list of lists of cells
+      - Contains the frame and the number of all the gameboard cells
+
+    loading : bool
+      - Attribute used to verify if the Game if the gmae is still being processed
+
+    game : Game
+      - Current Game object containing the game state
+
+    move_count : int
+      - Number of moves made in the current game
+
+    main_grid : tk.Frame
+      - Frame with the game grid
+
+    quitBtn : tk.Button
+      - GUI button to exit the current Game menu
+
+    hintBtn : tk.Button
+      - GUI button to show the hint for the next move of the player using an heuristic
+
+    dealBtn : tk.Button
+      - GUI button to execute the deal move
+    
+    moves_label : tk.label
+      - Label of the moves to be displayed
+
+    """
     def start_game(self):
+        """
+        Method for initializing a game
+        """
+
         self.currentHint = [0, 2]
         self.selected = None
         self.runningHint = False
@@ -71,6 +117,18 @@ class PlayerGame(BaseFrame):
             
 
     def playerMove(self, i, j):
+        """
+        Executing a player move on the game board
+
+        Attributes
+        ----------
+        i : int
+            - position of the first selected piece from the pair to remove from the board
+
+        j : int
+            - position of the last selected piece from the pair to remove from the board
+
+        """
         if self.selected == None:
             self.cells[i][j]["frame"].configure(bg="#7BB9C2")
             self.cells[i][j]["number"].configure(bg="#7BB9C2")
@@ -122,6 +180,15 @@ class PlayerGame(BaseFrame):
         self.update_GUI()
 
     def make_GUI(self, first_state):
+        """
+        Initializing the GUI that represents the game
+
+        Attributes
+        ----------
+
+        first_state : Game
+          - game used to be displayed on the GUI
+        """
         self.cells = []
         for i in range(first_state.rows):
             row = []
@@ -160,10 +227,16 @@ class PlayerGame(BaseFrame):
         self.moves_label.grid(row=1)
     
     def playerDeal(self):
+        """
+        Execute the move Deal defined in our game
+        """
         Logic.deal(self.game)
         self.update_GUI()
         
     def clearFrame(self):
+        """
+        Clearing the Frame by destroying all existent widgets
+        """
         # destroy all widgets from frame
         for widget in self.winfo_children():
             widget.destroy()
@@ -173,6 +246,9 @@ class PlayerGame(BaseFrame):
         self.pack_forget()
 
     def update_GUI(self):
+        """
+        Updating the GUI by chaning the board length, matrix, moves and scroll position
+        """
         state = self.game
             
         # Extend board
@@ -201,6 +277,9 @@ class PlayerGame(BaseFrame):
 
 
     def next_move(self):
+        """
+        Updating the GUI in order to show the next move of the found solution
+        """
         self.update_GUI()
         self.over()
 
@@ -208,6 +287,14 @@ class PlayerGame(BaseFrame):
         pass
 
     def extend_board(self,state):
+        """
+        Method for extending the board length
+
+        Attributes
+        ----------
+        state : Game
+          - Game used to caluclate the board extension size that needs to be made
+        """
         prev_rows = len(self.cells)
 
         # Number of rows to add

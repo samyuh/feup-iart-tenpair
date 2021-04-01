@@ -10,7 +10,7 @@ class Logic:
         Parameters
         ----------
         game : Game
-            executes the Deal Move on this game 
+            - executes the Deal Move on this game 
         """
         
         # One dimension array of game matrix without Null elements 
@@ -26,16 +26,18 @@ class Logic:
         Parameters
         ----------
         game : Game
-            game object with the game state matrix
+            - game object with the game state matrix
+
         index1 : int
-            value for the position of the first number to be removed
+            - value for the position of the first number to be removed
+
         index2 : int
-            value for the position of the second number to be removed
+            - value for the position of the second number to be removed
 
         Returns
         -------
         bool
-            Returns True if the move is valid, False otherwise
+            - Returns True if the move is valid, False otherwise
         """
         element1 = game.matrix[index1]
         element2 = game.matrix[index2]
@@ -74,12 +76,12 @@ class Logic:
         Parameters
         ----------
         game : Game
-            game object with the game state matrix
+            - game object with the game state matrix
 
         Returns
         -------
         list of lists of 2 ints
-            Returns a list containing pairs of elements that represent valid moves 
+            - Returns a list containing pairs of elements that represent valid moves 
 
         """
         lenMatrix = len(game.matrix)

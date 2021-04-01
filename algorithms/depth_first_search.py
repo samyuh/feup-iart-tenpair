@@ -12,6 +12,15 @@ from core.logic import Logic
 class DepthFirstSearch(threading.Thread):
     """
     A class used to run the Depth First Search algorithm 
+
+    Attributes
+    ----------
+    game : Game
+      - The initial Game State to run the algorithm
+      
+    callback : Callback
+      - callback used to return the gamestate to the caller thread after if shutsdown
+
     """
     def __init__(self, callback=lambda: None):
         """
@@ -20,7 +29,7 @@ class DepthFirstSearch(threading.Thread):
         Parameters
         ----------
         callback : Callback
-            callback used to return the gamestate to the caller thread after if shutsdown
+         - callback used to return the gamestate to the caller thread after if shutsdown
                 
         """
         threading.Thread.__init__(self)

@@ -8,19 +8,23 @@ class Game:
 
         Parameters
         ----------
-
         moves : list of moves
-            list with all the possible game moves
+          - list with all the possible game moves
+
         dealValue : int
-            number of deals already made in the game
+          - number of deals already made in the game
+
         rows : int
-            ammount of rows of the game's current state
+          - ammount of rows of the game's current state
+
         columns : int
-            ammount of columns of the game's current state
+          - ammount of columns of the game's current state
+
         matrix : list of int
-            flattened matrix with the current game state
+          - flattened matrix with the current game state
+
         previousState : Game
-            Previous Game object of the previous Game State. It is used to store the game Sequence. Default value is None
+          - Previous Game object of the previous Game State. It is used to store the game Sequence. Default value is None
         
         """
         self.moves = moves
@@ -39,12 +43,12 @@ class Game:
         Parameters
         ----------
         other : Game
-            other game Object to compare the current Game with
+          - other game Object to compare the current Game with
 
         Returns
         -------
         boolean
-            Returns True if the current object heuristic is greater than the other Object, False otherwise
+          - Returns True if the current object heuristic is greater than the other Object, False otherwise
         """
         return self.heuristic > other.heuristic
     
@@ -55,12 +59,12 @@ class Game:
         Parameters
         ----------
         other : Game
-            other game Object to compare the current Game with
+          - other game Object to compare the current Game with
 
         Returns
         -------
         bool
-            Returns True if the current object heuristic is equal to the other Object, False otherwise
+          - Returns True if the current object heuristic is equal to the other Object, False otherwise
         """
         return self.heuristic == other.heuristic
 
@@ -76,7 +80,8 @@ class Game:
 
         Returns
         -------
-        bool : True if the Game matrix is empty, False otherwise
+        bool
+          - True if the Game matrix is empty, False otherwise
         """
 
         if self.matrix == [None] * len(self.matrix):
@@ -105,7 +110,7 @@ class Game:
         Returns
         -------
         list of Games
-            returns a list with the game sequence of moves until this very move
+          - returns a list with the game sequence of moves until this very move
         """
 
         gameSequence = [self]
@@ -142,9 +147,10 @@ class Game:
         Parameters
         ----------
         coordsA : int
-            value for the position of the first number to be removed
+          - value for the position of the first number to be removed
+
         coordsB : int
-            value for the position of the second number to be removed
+          - value for the position of the second number to be removed
         
         """
         self.pair = [coordsA, coordsB]

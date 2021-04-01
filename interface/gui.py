@@ -11,11 +11,25 @@ class PythonGUI(tk.Tk):
     """
     The main window of the GUI.
 
-    Attributes:
-      container (tk.Frame): The frame container for the sub-frames.
-      frames (dict of tk.Frame): The available sub-frames.
+    Attributes
+    ----------
+    container : tk.Frame
+        - The frame container for the sub-frames
+
+    frames : dict of tk.Frame
+        - The available sub-frames
+    
+    my_canvas : tk.Canvas
+        tkinter object for the GUI canvas
     """
     def __init__(self):
+        """
+        Constructor for the PythonGUI object
+        Parameters
+        ----------
+        title : String
+            Title of the Game
+        """
         tk.Tk.__init__(self)
         self.title("Tenpair Game") 
         self.create_widgets()
@@ -74,21 +88,51 @@ class PythonGUI(tk.Tk):
         self.my_canvas.configure(scrollregion = self.my_canvas.bbox("all"))
 
     def routeHomeFrame(self):
+        """
+        Switches to the home page
+        """
         self.frames[HomeFrame].tkraise()
 
     def routePlayerGame(self):
+        """
+        Switches to the player game menu
+        """
         self.frames[PlayerGame].tkraise()
         self.frames[PlayerGame].start_game()
 
     def routeShowResultsFrame(self):
+        """
+        Switches to the Show results menu
+        """
         self.frames[ShowResultsFrame].tkraise()
         self.frames[ShowResultsFrame].play_animation()
 
     def getShowResultsFrame(self):
+        """
+        Get Method to obtain the frame from the show results menu
+
+        Returns
+        -------
+        Frame :
+            returns the frame used on the show results menu 
+        """
         return ShowResultsFrame
     
     def _on_mousewheel(self, event, scroll):
+        """
+        Sets mouseWheel scroll 
+
+        Parameters
+        ----------
+        event : Event
+            - defines an event on which this method is applied. "In our program, we only use the on_mousewheel event to enable mouse scrolling
+        scroll : int
+            - binds the ammount moved associated with the srcolling
+        """
         self.my_canvas.yview_scroll(scroll, "units")
 
     def _on_mousewheel_w(self, event):
+        """
+        Sets mouseWheel scroll with predefined units
+        """
         self.my_canvas.yview_scroll(int(-1*(event.delta/120)), "units")

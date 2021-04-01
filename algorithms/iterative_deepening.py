@@ -12,6 +12,15 @@ from core.logic import Logic
 class IterativeDeepening(threading.Thread):
     """
     A class used to run the Iterative Deepening Algorithm 
+
+    Attributes
+    ----------
+    game : Game
+      - The initial Game State to run the algorithm
+      
+    callback : Callback
+      - callback used to return the gamestate to the caller thread after if shutsdown
+
     """
     def __init__(self, callback=lambda: None):
         """
@@ -20,7 +29,7 @@ class IterativeDeepening(threading.Thread):
         Parameters
         ----------
         callback : Callback
-            callback used to return the gamestate to the caller thread after if shutsdown
+          - callback used to return the gamestate to the caller thread after if shutsdown
                 
         """
         threading.Thread.__init__(self)
@@ -52,11 +61,11 @@ class IterativeDeepening(threading.Thread):
         Parameters
         ----------
         matrix : list of int 
-            flattened list of the game State.
+          - flattened list of the game State.
         Returns
         -------
         int
-            returns the number of avaliable pairs of the board, which is a value that represents the heuristic of a Game.
+          - returns the number of avaliable pairs of the board, which is a value that represents the heuristic of a Game.
 
         """
         return len([element for element in matrix if element !=  None]) / 2

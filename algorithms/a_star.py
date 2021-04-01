@@ -14,7 +14,19 @@ from core.logic import Logic
 
 class AStar(threading.Thread):
     """
-    A class used to run the A* algorithm 
+    A class used to run the A* algorithm
+
+    Attributes
+    ----------
+    game : Game
+      - The initial Game State to run the algorithm
+
+    callback : Callback
+      - callback used to return the gamestate to the caller thread after if shutsdown
+
+    heuristic : int
+      - Integer containing the value for the game heuristic used in this algorithm
+    
     """
     def __init__(self, game, callback=lambda: None):
         """
@@ -24,9 +36,9 @@ class AStar(threading.Thread):
         ----------
 
         game : Game
-            The initial Game State to run the algorithm
+          - The initial Game State to run the algorithm
         callback : Callback
-            callback used to return the gamestate to the caller thread after if shutsdown
+          - callback used to return the gamestate to the caller thread after if shutsdown
                 
         """
         threading.Thread.__init__(self)
@@ -41,11 +53,11 @@ class AStar(threading.Thread):
         Parameters
         ----------
         matrix : list of int 
-            flattened list of the game State.
+          - flattened list of the game State.
         Returns
         -------
         int
-            returns the number of avaliable pairs of the board, which is a value that represents the heuristic of a Game.
+          - returns the number of avaliable pairs of the board, which is a value that represents the heuristic of a Game.
 
         """
         return len([element for element in matrix if element !=  None]) / 2

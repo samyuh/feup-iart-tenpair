@@ -11,8 +11,50 @@ from .frame import BaseFrame
 class ShowResultsFrame(BaseFrame):
     """
     Class for displaying the game Result in a frame
+
+    Attributes
+    ----------
+
+    loading : bool
+      - Attribute used to check if there is proessing still being made
+
+    actual_state : int
+      - index indicating the current Game object of the self.state list that should be used
+
+    move_count : int
+      - counter for the ammount of game moves
+        
+    moveBtn : tk.Button
+      - Button for the displaying the next move in the game sequence
+
+    loadingText : tk.Button
+      - Button contatin the Text for the processing nodes message
+    
+    loadingNext : int
+      - Ammount of dots (.) being displayed in the processing nodes animation
+    
+    cells : list of lists of cells
+      - Contains the frame and the number of all the gameboard cells
+    
+    main_grid : tk.Frame
+      - Frame with the game grid
+    
+    moves_label : tk.label
+      - Label of the moves to be displayed
+            
+    
+    states
     """
     def setState(self, state):
+        """
+        Sets the current Game state to the one received as an argument
+
+        Parameters
+        ----------
+        state : list of Games
+          - list of Game objects with all the information about the Game
+
+        """
         self.loading = False
         self.clearFrame()
         self.states = state
@@ -42,6 +84,8 @@ class ShowResultsFrame(BaseFrame):
         
         
     def play_animation(self):
+        """ Initializes the animation for the screen being displayed while nodes are being processed"""
+
         self.loadingText = tk.Label(self, text='Processing Nodes...', font='Monoid 35 bold', bg='#212121', fg="#ffffff")
         self.loadingText.place(relx=0.5, rely=0.5, anchor = tk.CENTER)
   
@@ -56,6 +100,15 @@ class ShowResultsFrame(BaseFrame):
         self.loadingText.destroy()
 
     def make_GUI(self, first_state):
+        """
+        Initializes the GUI that contatins the game results
+
+        Parameters
+        ----------
+        first_state : Game
+          - Game Object containing the initial state of the game, used to intialize the game results GUI
+
+        """
         self.cells = []
         for i in range(first_state.rows):
             row = []
@@ -93,6 +146,9 @@ class ShowResultsFrame(BaseFrame):
         self.moves_label.grid(row=1)
     
     def clearFrame(self):
+        """
+        Clearing the Frame by destroying all existent widgets
+        """
         # destroy all widgets from frame
         for widget in self.winfo_children():
             widget.destroy()
@@ -102,6 +158,10 @@ class ShowResultsFrame(BaseFrame):
         self.pack_forget()
 
     def update_GUI(self):
+        """
+        Updating the GUI by changing the game state by updating the Gameboard, length, matrix, moves and scroll position
+
+        """
         state = self.states[self.actual_state] # actual state
         
         if (self.actual_state + 1 < len(self.states)) and (self.states[self.actual_state + 1].pair != None):
@@ -139,20 +199,37 @@ class ShowResultsFrame(BaseFrame):
 
 
     def next_move(self):
+        """
+        Updating the GUI in order to show the next move of the found solution
+        """
         self.update_GUI()
         self.over()
 
     def over(self):
+        """
+        Quiting this State
+        """
         if self.actual_state == len(self.states):
             self.moveBtn['text']='Quit'
             self.moveBtn['command'] = self.test
 
     def test(self):
+        """
+        Switching state to Home Page after quiting
+        """
         self.loading = True
         self.controller.routeHomeFrame()
         self.clearFrame()
 
     def extend_board(self,state):
+        """
+        Method for extending the board length
+
+        Attributes
+        ----------
+        state : Game
+          - Game used to caluclate the board extension size that needs to be made
+        """
         prev_rows = len(self.cells)
 
         # Number of rows to add

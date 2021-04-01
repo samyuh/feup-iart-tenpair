@@ -3,12 +3,18 @@ import tkinter as tk
 class BaseFrame(tk.Frame):
     """An abstract base class for the frames that sit inside PythonGUI.
 
-    Args:
-      master (tk.Frame): The parent widget.
-      controller (PythonGUI): The controlling Tk object.
+    Attributes
+    ----------
+    master (tk.Frame):
+      - The parent widget
 
-    Attributes:
-      controller (PythonGUI): The controlling Tk object.
+    controller (PythonGUI): 
+      - The controlling Tk object
+
+    Attributes
+    ----------
+    controller (PythonGUI): 
+      The controlling Tk object.
 
     """
     def __init__(self, master, controller):
@@ -18,10 +24,10 @@ class BaseFrame(tk.Frame):
         Parameters
         ----------
         master : tk.Frame
-          parent Widget 
+          - parent Widget 
 
         controller : PythonGUI
-          The controlling Tk object.
+          - The controlling Tk object.
 
         """
         tk.Frame.__init__(self, master)
@@ -36,6 +42,6 @@ class BaseFrame(tk.Frame):
         Raises 
         ------
         NotImplementedError
-          No implementation has yet ben made
+          - No implementation has yet been made
         """
         raise NotImplementedError  
