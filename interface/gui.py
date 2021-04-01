@@ -23,7 +23,7 @@ class PythonGUI(tk.Tk):
         self.title("Tenpair Game") 
         self.create_widgets()
         self.resizable(2560, 1440)
-        self.minsize(1100, 800)
+        self.minsize(1100, 700)
 
     def create_widgets(self):
         """
@@ -31,11 +31,11 @@ class PythonGUI(tk.Tk):
         """            
         #  Frame Container
         # Create to check if user is on windows/linux
-        #self.attributes('-zoomed', True)
+        self.attributes('-zoomed', True)
 
         # Create Canvas
         self.my_canvas = tk.Canvas(self, bg="#212121", highlightthickness=0)
-        self.my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+        self.my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=tk.TRUE)
 
         # Scrollbar
         my_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=self.my_canvas.yview)
@@ -89,7 +89,11 @@ class PythonGUI(tk.Tk):
         return FrameResults
     
     def _on_mousewheel(self, event, scroll):
+        if self.my_canvas.yview() == (0.0, 1.0):
+            return
         self.my_canvas.yview_scroll(scroll, "units")
 
     def _on_mousewheel_w(self, event):
+        if self.my_canvas.yview() == (0.0, 1.0):
+            return
         self.my_canvas.yview_scroll(int(-1*(event.delta/120)), "units")

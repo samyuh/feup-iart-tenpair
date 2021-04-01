@@ -17,7 +17,7 @@ class FrameAlgorithm(BaseFrame):
         """Create the base widgets for the frame."""
 
         frame_title = tk.Label(self, text='TenPair', font='Monoid 50 bold', bg="#212121", fg='#dddddd')
-        frame_title.pack(fill='both', pady=(50, 10))
+        frame_title.pack(pady=(50, 10))
 
         algorithmsDict = {
             "A*": self.threadAStar,
@@ -35,7 +35,7 @@ class FrameAlgorithm(BaseFrame):
                 command= self.play, height=3, width=55).pack(pady=5)
 
         frame2_title = tk.Label(self, text='Choose an Algorithm to Solve', font='Monoid 23 bold', bg="#212121", fg='#dddddd')
-        frame2_title.pack(fill='both', pady=(90, 30))
+        frame2_title.pack(fill='both', pady=(50, 30))
         for key in algorithmsDict:
             tk.Button(self, text=key, font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
                 command= algorithmsDict[key], height=3, width=55).pack(pady=5)

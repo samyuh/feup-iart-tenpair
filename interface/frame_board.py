@@ -16,10 +16,10 @@ class FrameBoard(BaseFrame):
         """Create the base widgets for the frame."""
 
         frame_title = tk.Label(self, text='TenPair', font='Monoid 50 bold', bg="#212121", fg='#dddddd')
-        frame_title.pack(fill='both', pady=(50, 10))
+        frame_title.pack(pady=(50, 10))
 
         frame1_title = tk.Label(self, text='Choose the Board', font='Monoid 33 bold', bg="#212121", fg='#dddddd')
-        frame1_title.pack(fill='both', pady=(10, 60))
+        frame1_title.pack(pady=(10, 60))
 
         # Play Game Button
         tk.Button(self, text="Small Board", font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
@@ -29,7 +29,7 @@ class FrameBoard(BaseFrame):
                 command= self.normal, height=3, width=55).pack(pady=5)
 
         tk.Button(self, text="Random Board (Can take to long to be solved)", font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
-                command= self.random, height=3, width=55).pack(pady=5)
+                command= self.random, height=3, width=55).pack(pady=(5,0))
 
     def small(self):
         matrix = [9, 3, 8, 7, 3, 7,
