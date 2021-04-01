@@ -6,24 +6,27 @@ import tkinter as tk
 from .frame import BaseFrame
 from core import Game
 
-class BoardSelect(BaseFrame):
+class FrameBoard(BaseFrame):
     """
         The application home page.
     """
     def create_widgets(self):
         """Create the base widgets for the frame."""
 
+        frame_title = tk.Label(self, text='TenPair', font='Monoid 50 bold', bg="#212121", fg='#dddddd')
+        frame_title.pack(fill='both', pady=(50, 10))
+
         frame1_title = tk.Label(self, text='Choose the Board', font='Monoid 33 bold', bg="#212121", fg='#dddddd')
-        frame1_title.pack(fill='both', pady=(50, 60))
+        frame1_title.pack(fill='both', pady=(10, 60))
 
         # Play Game Button
         tk.Button(self, text="Small Board", font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
-                command= self.small, height=3, width=34).pack(pady=5)
+                command= self.small, height=3, width=55).pack(pady=5)
         
         tk.Button(self, text="Normal Board", font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
-                command= self.normal, height=3, width=45).pack(pady=5)
+                command= self.normal, height=3, width=55).pack(pady=5)
 
-        tk.Button(self, text="Random Board (Board can be impossible to solved)", font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
+        tk.Button(self, text="Random Board (Can take to long to be solved)", font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
                 command= self.random, height=3, width=55).pack(pady=5)
 
     def small(self):
@@ -34,7 +37,7 @@ class BoardSelect(BaseFrame):
         rows = 2
         game = Game(0, 0, rows, columns, matrix) 
 
-        self.controller.routeHomeFrame(game)
+        self.controller.routeFrameAlgorithm(game)
 
     def normal(self):
         matrix = [1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -44,7 +47,7 @@ class BoardSelect(BaseFrame):
         rows = 3
         game = Game(0, 0, rows, columns, matrix) 
 
-        self.controller.routeHomeFrame(game)
+        self.controller.routeFrameAlgorithm(game)
 
     def random(self):
         matrix = [9, 3, 8, 7, 3, 7,
@@ -54,4 +57,4 @@ class BoardSelect(BaseFrame):
         rows = 2
         game = Game(0, 0, rows, columns, matrix) 
 
-        self.controller.routeHomeFrame(game)
+        self.controller.routeFrameAlgorithm(game)

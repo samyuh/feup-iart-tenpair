@@ -8,7 +8,7 @@ import algorithms
 from core import Game, Logic
 from .frame import BaseFrame
 
-class PlayerGame(BaseFrame):
+class FrameGame(BaseFrame):
     def initGame(self, game):
         self.game = game
 

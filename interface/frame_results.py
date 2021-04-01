@@ -8,7 +8,7 @@ import algorithms
 from core import Game
 from .frame import BaseFrame
 
-class ShowResultsFrame(BaseFrame):
+class FrameResults(BaseFrame):
     def setState(self, state):
         self.loading = False
         self.clearFrame()

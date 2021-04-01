@@ -57,7 +57,7 @@ class BreathFirstSearch(threading.Thread):
                         visited.add(repr(newGame.matrix))
                         append(newGame)
                 
-                if game.dealValue < 2:
+                if game.dealValue < 1:
                     gameDeal = Game(game.moves, game.dealValue + 1, game.rows, game.columns,game.matrix.copy(), game)
                     Logic.deal(gameDeal)
                     if repr(gameDeal.matrix) not in visited:

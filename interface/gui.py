@@ -3,10 +3,10 @@ import tkinter as tk
 import functools
 
 # Custom imports
-from .home import HomeFrame
-from .player_game import PlayerGame
-from .results import ShowResultsFrame
-from .board_select import BoardSelect
+from .frame_algorithm import FrameAlgorithm
+from .frame_board import FrameBoard
+from .frame_game import FrameGame
+from .frame_results import FrameResults
 
 from core import Game
 
@@ -24,8 +24,6 @@ class PythonGUI(tk.Tk):
         self.create_widgets()
         self.resizable(2560, 1440)
         self.minsize(1100, 800)
-
-
 
     def create_widgets(self):
         """
@@ -60,7 +58,7 @@ class PythonGUI(tk.Tk):
 
         #   Frames
         self.frames = {}
-        for f in (BoardSelect, HomeFrame, PlayerGame, ShowResultsFrame): # defined subclasses of BaseFrame
+        for f in (FrameAlgorithm, FrameBoard, FrameGame, FrameResults): # defined subclasses of BaseFrame
             frame = f(self.container, self)
             frame.grid(row = 0, column = 0, sticky = "nsew")
             self.frames[f] = frame
@@ -72,23 +70,23 @@ class PythonGUI(tk.Tk):
         self.my_canvas.configure(scrollregion = self.my_canvas.bbox("all"))
 
     def routeBoardSelect(self):
-        self.frames[BoardSelect].tkraise()
+        self.frames[FrameBoard].tkraise()
 
-    def routeHomeFrame(self, game):
-        self.frames[HomeFrame].initGame(game)
-        self.frames[HomeFrame].tkraise()
+    def routeFrameAlgorithm(self, game):
+        self.frames[FrameAlgorithm].initGame(game)
+        self.frames[FrameAlgorithm].tkraise()
 
     def routePlayerGame(self, game):
-        self.frames[PlayerGame].initGame(game)
-        self.frames[PlayerGame].start_game()
-        self.frames[PlayerGame].tkraise()
+        self.frames[FrameGame].initGame(game)
+        self.frames[FrameGame].start_game()
+        self.frames[FrameGame].tkraise()
 
     def routeShowResultsFrame(self):
-        self.frames[ShowResultsFrame].tkraise()
-        self.frames[ShowResultsFrame].play_animation()
+        self.frames[FrameResults].tkraise()
+        self.frames[FrameResults].play_animation()
 
     def getShowResultsFrame(self):
-        return ShowResultsFrame
+        return FrameResults
     
     def _on_mousewheel(self, event, scroll):
         self.my_canvas.yview_scroll(scroll, "units")
