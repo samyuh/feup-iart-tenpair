@@ -69,10 +69,7 @@ class Game:
         return self.heuristic == other.heuristic
 
     def __repr__(self):
-        return str(self)
-
-    def __str__(self):
-        return str(self)
+        return repr(self.matrix)
 
     def isEmpty(self):
         """
@@ -131,7 +128,6 @@ class Game:
         Method for printing the current gameSequence
         """
         gameSequence = self.getFullGame()
-        print(len(gameSequence))
         
         for i in gameSequence:
             print()
@@ -155,4 +151,4 @@ class Game:
         """
         self.pair = [coordsA, coordsB]
         self.matrix[coordsA] = None
-        self.matrix[coordsB] = None  
+        self.matrix[coordsB] = None

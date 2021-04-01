@@ -39,8 +39,8 @@ class GreedySearch(threading.Thread):
                 
         """
         threading.Thread.__init__(self)
-        self.callback = callback
         self.game = game
+        self.callback = callback
 
     def heuristic(self, matrix):
         """
@@ -64,9 +64,11 @@ class GreedySearch(threading.Thread):
         This algorithm uses an heuristic to suggest the following best move and calculate and aproximate optimal solution
 
         """
-        game = self.game
         # Priority Queue to order by heuristic
         queue = PriorityQueue()
+        game = self.game
+        game.heuristic = self.heuristic(game.matrix)
+        
         queue.put(game)
 
         visited = set()
@@ -75,14 +77,14 @@ class GreedySearch(threading.Thread):
         start = time.time()
         while True:
             game = queue.get()
+
             if game.isEmpty():
                 end = time.time()
                 print("Time elapsed: {}".format(end - start))
-                
-                gameStates = game.getFullGame()
-                self.callback(gameStates)
                 print("Found a solution: ")
                 print("Total Moves: {}".format(game.moves))
+            
+                self.callback(game.getFullGame())
                 break  
 
             operationList = Logic.getAllMoves(game)
@@ -91,14 +93,14 @@ class GreedySearch(threading.Thread):
             for operation in operationList:
                 newGame = Game(newGameMoves, game.dealValue, game.rows, game.columns, game.matrix.copy(),game)
                 newGame.removePair(operation[0], operation[1])
-                newGame.heuristic = self.heuristic(game.matrix.copy())
+                newGame.heuristic = self.heuristic(newGame.matrix)
                 if repr(newGame.matrix) not in visited:
                     visited.add(repr(newGame.matrix))
                     queue.put(newGame)
 
             gameDeal = Game(game.moves, game.dealValue + 1, game.rows, game.columns,game.matrix.copy(), game)
             Logic.deal(gameDeal)
-            gameDeal.heuristic = self.heuristic(gameDeal.matrix.copy())
+            gameDeal.heuristic = self.heuristic(gameDeal.matrix)
             if repr(gameDeal.matrix) not in visited:
                 visited.add(repr(gameDeal.matrix))
                 queue.put(gameDeal)

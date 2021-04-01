@@ -22,25 +22,22 @@ class DepthFirstSearch(threading.Thread):
       - callback used to return the gamestate to the caller thread after if shutsdown
 
     """
-    def __init__(self, callback=lambda: None):
+    def __init__(self, game, callback=lambda: None):
         """
         Constructor method for initializing the Depth First Search algorithm
 
         Parameters
         ----------
+        game : Game
+          - The initial Game State to run the algorithm
+          
         callback : Callback
          - callback used to return the gamestate to the caller thread after if shutsdown
                 
         """
         threading.Thread.__init__(self)
+        self.game = game
         self.callback = callback
-
-        gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
-                    1, 1, 1, 2, 1, 3, 1, 4, 1, 
-                    5, 1, 6, 1, 7, 1, 8, 1, 9]
-        columns = 9
-        rows = 3
-        self.game = Game(0, 0, rows, columns, gameState)
 
     def run(self):
         """
@@ -60,17 +57,21 @@ class DepthFirstSearch(threading.Thread):
             if (len(visited) % 10000 == 0):
                 print("Visited: {} Remaining: {}".format(len(visited), len(queue)))
             
-            # Next GameState
-            game = queue.pop()
-            #game.printGame()
+            try:
+                # Next GameState
+                game = queue.pop()
+            except IndexError as e:
+                print("DFS is only accepting boards that can be solved with one deal.")
+                self.callback([])
+                break
 
             # Found a solution [Empty Matrix]
             if game.isEmpty():
-                test = game.getFullGame()
-                self.callback(test)
-                game.printGameSequence()
                 print("Found a solution: ")
                 print("Total Moves: {}".format(game.moves))
+                print("Time elapsed: {}".format(time.time() - start))
+
+                self.callback(game.getFullGame())
                 break
             # Get available moves and add them to the queue
             else:
@@ -94,7 +95,5 @@ class DepthFirstSearch(threading.Thread):
                         visited.add(repr(gameDeal.matrix))
                         append(gameDeal)
 
-        end = time.time()
-        print("Time elapsed: {}".format(end - start))
-        #a = game.getFullGame()
+        
         

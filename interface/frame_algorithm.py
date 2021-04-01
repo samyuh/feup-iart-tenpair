@@ -4,14 +4,9 @@ import tkinter as tk
 
 # -- Costum Libraries -- #
 import algorithms
-
-from core import Game
 from .frame import BaseFrame
 
-# Home where user can select board size and start
-
-# Next where user can choose to play or see AI solving the problem
-class HomeFrame(BaseFrame):
+class FrameAlgorithm(BaseFrame):
     """
     The application home page.
 
@@ -27,47 +22,44 @@ class HomeFrame(BaseFrame):
       - The controlling Tk object of the interface
         
     """
+    def initGame(self, game):
+        self.game = game
 
     def create_widgets(self):
         """Create the base widgets for the frame."""
 
-        frame1_title = tk.Label(self, text='Choose the Algorithm', font='Monoid 33 bold', bg="#212121", fg='#dddddd')
-        frame1_title.pack(fill='both', pady=(50, 60))
+        frame_title = tk.Label(self, text='TenPair', font='Monoid 50 bold', bg="#212121", fg='#dddddd')
+        frame_title.pack(pady=(50, 10))
 
         algorithmsDict = {
-            "A Star": self.threadAStar,
+            "A*": self.threadAStar,
             "Breadth First Search": self.threadBreathFirstSearch,
             "Depth First Search": self.threadDepthFirstSearch,
             "Greedy Search": self.threadGreedySearch,
             "Iterative Deepening": self.threadIterative
         }
 
-        # Play Game Button
-        tk.Button(self, text="Play Game", font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
-                command= self.play, height=3, width=30).pack(pady=5)
+        frame1_title = tk.Label(self, text='Play the Game', font='Monoid 23 bold', bg="#212121", fg='#dddddd')
+        frame1_title.pack(fill='both', pady=(10, 30))
 
+        # Play Game Button
+        tk.Button(self, text="Start", font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
+                command= self.play, height=3, width=55).pack(pady=5)
+
+        frame2_title = tk.Label(self, text='Choose an Algorithm to Solve', font='Monoid 23 bold', bg="#212121", fg='#dddddd')
+        frame2_title.pack(fill='both', pady=(50, 30))
         for key in algorithmsDict:
             tk.Button(self, text=key, font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
-                command= algorithmsDict[key], height=3, width=30).pack(pady=5)
+                command= algorithmsDict[key], height=3, width=55).pack(pady=5)
 
     def play(self):
-        """
-        Method for initialzing execution
-        """
-        self.controller.routePlayerGame()
+        self.controller.routePlayerGame(self.game)
 
     def threadAStar(self):
         """
         Method for initializing the A* thread
         """
-        matrix = [1, 2, 3, 4, 5, 6, 7, 8, 9,
-                    1, 1, 1, 2, 1, 3, 1, 4, 1, 
-                    5, 1, 6, 1, 7, 1, 8, 1, 9]
-        columns = 9
-        rows = 3
-        game = Game(0, 0, rows, columns, matrix)
-
-        thread = algorithms.AStar(game, self.setState)
+        thread = algorithms.AStar(self.game, self.setState)
         thread.start()
         self.controller.routeShowResultsFrame()
 
@@ -75,7 +67,7 @@ class HomeFrame(BaseFrame):
         """
         Method for initializing the Breadth First Search thread
         """
-        thread = algorithms.BreathFirstSearch(self.setState)
+        thread = algorithms.BreathFirstSearch(self.game, self.setState)
         thread.start()
         self.controller.routeShowResultsFrame()
 
@@ -83,7 +75,7 @@ class HomeFrame(BaseFrame):
         """
         Method for initializing the Depth First Search thread
         """
-        thread = algorithms.DepthFirstSearch(self.setState)
+        thread = algorithms.DepthFirstSearch(self.game, self.setState)
         thread.start()
         self.controller.routeShowResultsFrame()
 
@@ -91,14 +83,7 @@ class HomeFrame(BaseFrame):
         """
         Method for initializing the Greedy Algorithm thread
         """
-        gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
-                    1, 1, 1, 2, 1, 3, 1, 4, 1, 
-                    5, 1, 6, 1, 7, 1, 8, 1, 9]
-        columns = 9
-        rows = 3
-        game = Game(0, 0, rows, columns, gameState)
-
-        thread = algorithms.GreedySearch(game, self.setState)
+        thread = algorithms.GreedySearch(self.game, self.setState)
         thread.start()
         self.controller.routeShowResultsFrame()
 
@@ -106,7 +91,7 @@ class HomeFrame(BaseFrame):
         """
         Method for initializing the Iterative Deepening thread
         """
-        thread = algorithms.IterativeDeepening(self.setState)
+        thread = algorithms.IterativeDeepening(self.game, self.setState)
         thread.start()
         self.controller.routeShowResultsFrame()
 

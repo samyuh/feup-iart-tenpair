@@ -8,7 +8,7 @@ import algorithms
 from core import Game, Logic
 from .frame import BaseFrame
 
-class PlayerGame(BaseFrame):
+class FrameGame(BaseFrame):
     """
     Class for an object containing all Game properties and methods
     
@@ -51,6 +51,10 @@ class PlayerGame(BaseFrame):
       - Label of the moves to be displayed
 
     """
+
+    def initGame(self, game):
+        self.game = game
+
     def start_game(self):
         """
         Method for initializing a game
@@ -61,10 +65,6 @@ class PlayerGame(BaseFrame):
         self.runningHint = False
         self.loading = False
         self.clearFrame()
-
-        self.game = Game(0,0,3,9,[1, 2, 3, 4, 5, 6, 7, 8, 9,
-                                    1, 1, 1, 2, 1, 3, 1, 4, 1, 
-                                    5, 1, 6, 1, 7, 1, 8, 1, 9])
         self.move_count = 0
 
         # todo: adjust frame size as desired
@@ -76,7 +76,7 @@ class PlayerGame(BaseFrame):
         self.update_GUI()
 
         # Quit Button
-        self.quitBtn = tk.Button(self, text="Quit", command = lambda self=self: self.controller.routeHomeFrame() , font='Roboto 11 bold', fg='#ffffff', bg='#1D8EA0')
+        self.quitBtn = tk.Button(self, text="Quit", command = lambda self=self: self.controller.routeBoardSelect() , font='Roboto 11 bold', fg='#ffffff', bg='#1D8EA0')
         self.quitBtn.place(relx=0.6, y=45)
         self.quitBtn.config(highlightbackground='#1D8EA0')
 
@@ -98,23 +98,25 @@ class PlayerGame(BaseFrame):
 
     def getNextMove(self, states):
         self.runningHint = False
-        for i in states:
-            print(i.matrix)
+        index0_i = states[1].pair[0] // self.game.columns
+        index0_j = states[1].pair[0] % self.game.columns
 
-        self.cells[0][0]["frame"].configure(bg="#FFFF00")
-        self.cells[0][0]["number"].configure(bg="#FFFF00")
+        index1_i = states[1].pair[1] // self.game.columns
+        index1_j = states[1].pair[1] % self.game.columns
 
-        self.cells[0][1]["frame"].configure(bg="#FFFF00")
-        self.cells[0][1]["number"].configure(bg="#FFFF00")
+        print(states[1].pair)
+
+        self.cells[index0_i][index0_j]["frame"].configure(bg="#FFFF00")
+        self.cells[index0_i][index0_j]["number"].configure(bg="#FFFF00")
+
+        self.cells[index1_i][index1_j]["frame"].configure(bg="#FFFF00")
+        self.cells[index1_i][index1_j]["number"].configure(bg="#FFFF00")
 
     def computerHint(self):
         if not self.runningHint:
             self.runningHint = True
             thread = algorithms.GreedySearch(self.game, self.getNextMove)
-            thread.start()
-
-            print("Hint!")
-            
+            thread.start()        
 
     def playerMove(self, i, j):
         """
@@ -129,6 +131,13 @@ class PlayerGame(BaseFrame):
             - position of the last selected piece from the pair to remove from the board
 
         """
+        index = i * self.game.columns + j
+        if index > len(self.game.matrix) - 1:
+            return
+
+        if self.game.matrix[index] == None:
+            return 
+
         if self.selected == None:
             self.cells[i][j]["frame"].configure(bg="#7BB9C2")
             self.cells[i][j]["number"].configure(bg="#7BB9C2")
@@ -145,8 +154,8 @@ class PlayerGame(BaseFrame):
             # Verify if it is a pair
             i0 = self.selected[0][0]
             j0 = self.selected[0][1]
-            previousIndex = i0 * 9 + j0
-            currentIndex = i * 9 + j
+            previousIndex = i0 * self.game.columns + j0
+            currentIndex = i * self.game.columns + j
             # Bigger should be always the first
             if (previousIndex < currentIndex):
                 previousIndex, currentIndex = currentIndex, previousIndex
@@ -201,8 +210,8 @@ class PlayerGame(BaseFrame):
                 )
                 
                 cell_frame.grid(row=i, column=j, padx=5, pady=5)
-                cell_number = tk.Button(self.main_grid, bg="#F0F0F0", command = lambda i=i, j=j: self.playerMove(i, j), font='Roboto 18 bold', fg='#212121')
-                cell_number.grid(row=i,column=j)
+                cell_number = tk.Button(self.main_grid, bg="#F0F0F0", command = lambda i=i, j=j: self.playerMove(i, j), font='Roboto 18 bold', fg='#212121', borderwidth=0, highlightthickness=0)
+                cell_number.grid(row=i,column=j, sticky = tk.W + tk.S + tk.N + tk.E, padx = 8, pady = 8)
                 cell_data = {"frame": cell_frame, "number": cell_number}
                 row.append(cell_data)
             self.cells.append(row)
@@ -265,7 +274,7 @@ class PlayerGame(BaseFrame):
                 self.cells[row][col]["number"].configure(text="", bg="#F0F0F0")
             else:                
                 self.cells[row][col]["frame"].configure(bg="#F0F0F0")
-                self.cells[row][col]["number"].configure(text = str(cell_value))
+                self.cells[row][col]["number"].configure(text = str(cell_value), bg="#F0F0F0")
 
         # Update moves
         self.move_count = state.moves
@@ -310,8 +319,8 @@ class PlayerGame(BaseFrame):
                     height = 100
                 )
                 cell_frame.grid(row=i, column=j, padx=5, pady=5)
-                cell_number = tk.Button(self.main_grid, bg="#F0F0F0", command = lambda i=i, j=j: self.playerMove(i, j), font='Roboto 18 bold', fg='#212121')
-                cell_number.grid(row=i,column=j)
+                cell_number = tk.Button(self.main_grid, bg="#F0F0F0", command = lambda i=i, j=j: self.playerMove(i, j), font='Roboto 18 bold', fg='#212121', borderwidth=0, highlightthickness=0)
+                cell_number.grid(row=i,column=j, sticky = tk.W + tk.S + tk.N + tk.E, padx = 8, pady = 8)
                 cell_data = {"frame": cell_frame, "number": cell_number}
                 row.append(cell_data)
             self.cells.append(row)

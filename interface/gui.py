@@ -3,9 +3,12 @@ import tkinter as tk
 import functools
 
 # Custom imports
-from .home import HomeFrame
-from .player_game import PlayerGame
-from .results import ShowResultsFrame
+from .frame_algorithm import FrameAlgorithm
+from .frame_board import FrameBoard
+from .frame_game import FrameGame
+from .frame_results import FrameResults
+
+from core import Game
 
 class PythonGUI(tk.Tk):
     """
@@ -34,19 +37,19 @@ class PythonGUI(tk.Tk):
         self.title("Tenpair Game") 
         self.create_widgets()
         self.resizable(2560, 1440)
-        self.minsize(1100, 800)
+        self.minsize(1100, 700)
 
     def create_widgets(self):
         """
         Create the widgets for the frame.
-        """             
+        """            
         #  Frame Container
         # Create to check if user is on windows/linux
-        #self.attributes('-zoomed', True)
+        self.attributes('-zoomed', True)
 
         # Create Canvas
         self.my_canvas = tk.Canvas(self, bg="#212121", highlightthickness=0)
-        self.my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+        self.my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=tk.TRUE)
 
         # Scrollbar
         my_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=self.my_canvas.yview)
@@ -69,43 +72,52 @@ class PythonGUI(tk.Tk):
 
         #   Frames
         self.frames = {}
-        for f in (HomeFrame, PlayerGame, ShowResultsFrame): # defined subclasses of BaseFrame
+        for f in (FrameAlgorithm, FrameBoard, FrameGame, FrameResults): # defined subclasses of BaseFrame
             frame = f(self.container, self)
             frame.grid(row = 0, column = 0, sticky = "nsew")
             self.frames[f] = frame
         
-        self.routeHomeFrame()
+        self.routeBoardSelect()
 
-    def canvas_bind(self,e):
+    def canvas_bind(self,event):
         """
         Binds the canvas to the e parameter
 
         Parameters
         ----------
-        e
+        event: Event
+          - event after resizing window
         """
-        self.my_canvas.itemconfig(self.canvas_window , width=e.width)
+        self.my_canvas.itemconfig(self.canvas_window , width=event.width)
         self.my_canvas.configure(scrollregion = self.my_canvas.bbox("all"))
 
-    def routeHomeFrame(self):
+    def routeBoardSelect(self):
         """
-        Switches to the home page
+        Switches to the board selection page
         """
-        self.frames[HomeFrame].tkraise()
+        self.frames[FrameBoard].tkraise()
 
-    def routePlayerGame(self):
+    def routeFrameAlgorithm(self, game):
+        """
+        Switches to the algorithm selection page
+        """
+        self.frames[FrameAlgorithm].initGame(game)
+        self.frames[FrameAlgorithm].tkraise()
+
+    def routePlayerGame(self,game):
         """
         Switches to the player game menu
         """
-        self.frames[PlayerGame].tkraise()
-        self.frames[PlayerGame].start_game()
+        self.frames[FrameGame].initGame(game)
+        self.frames[FrameGame].start_game()
+        self.frames[FrameGame].tkraise()
 
     def routeShowResultsFrame(self):
         """
         Switches to the Show results menu
         """
-        self.frames[ShowResultsFrame].tkraise()
-        self.frames[ShowResultsFrame].play_animation()
+        self.frames[FrameResults].tkraise()
+        self.frames[FrameResults].play_animation()
 
     def getShowResultsFrame(self):
         """
@@ -116,23 +128,28 @@ class PythonGUI(tk.Tk):
         Frame :
             returns the frame used on the show results menu 
         """
-        return ShowResultsFrame
+        return FrameResults
     
+
     def _on_mousewheel(self, event, scroll):
         """
-        Sets mouseWheel scroll 
+        Sets mouseWheel scroll (Windows)
 
         Parameters
         ----------
         event : Event
             - defines an event on which this method is applied. "In our program, we only use the on_mousewheel event to enable mouse scrolling
         scroll : int
-            - binds the ammount moved associated with the srcolling
+            - binds the ammount moved associated with the scrolling
         """
+        if self.my_canvas.yview() == (0.0, 1.0):
+            return
         self.my_canvas.yview_scroll(scroll, "units")
 
     def _on_mousewheel_w(self, event):
         """
-        Sets mouseWheel scroll with predefined units
+        Sets mouseWheel scroll with predefined units (Linux)
         """
+        if self.my_canvas.yview() == (0.0, 1.0):
+            return
         self.my_canvas.yview_scroll(int(-1*(event.delta/120)), "units")

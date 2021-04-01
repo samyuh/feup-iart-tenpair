@@ -22,25 +22,22 @@ class BreathFirstSearch(threading.Thread):
       - callback used to return the gamestate to the caller thread after if shutsdown
 
     """
-    def __init__(self, callback=lambda: None):
+    def __init__(self, game, callback=lambda: None):
         """
         Constructor method for initializing the Breadth First Search algorithm
 
         Parameters
         ----------
+        game : Game
+          - The initial Game State to run the algorithm
+
         callback : Callback
           - callback used to return the gamestate to the caller thread after if shutsdown
                 
         """
         threading.Thread.__init__(self)
+        self.game = game
         self.callback = callback
-
-        gameState = [1, 2, 3, 4, 5, 6,
-                    1, 1, 1, 2, 1, 3,
-                    ]
-        columns = 6
-        rows = 2
-        self.game = Game(0, 0, rows, columns, gameState)
 
     def run(self):
         """
@@ -59,17 +56,23 @@ class BreathFirstSearch(threading.Thread):
         while True:
             if (len(visited) % 10000 == 0):
                 print("Visited: {} Remaining: {}".format(len(visited), len(queue)))
-            
-            # Next GameState
-            game = queue.popleft()
+
+            try:
+                # Next GameState
+                game = queue.popleft()
+            except IndexError as e:
+                print("BFS is only accepting boards that can be solved with one deal.")
+                self.callback([])
+                break
 
             # Found a solution [Empty Matrix]
             if game.isEmpty():
-                gameStates = game.getFullGame()
-                self.callback(gameStates)
-                game.printGameSequence()
                 print("Found a solution: ")
                 print("Total Moves: {}".format(game.moves))
+                print("Time elapsed: {}".format(time.time() - start))
+
+                gameStates = game.getFullGame()
+                self.callback(gameStates)
                 break
             # Get available moves and add them to the queue
             else:
@@ -90,7 +93,3 @@ class BreathFirstSearch(threading.Thread):
                     if repr(gameDeal.matrix) not in visited:
                         visited.add(repr(gameDeal.matrix))
                         append(gameDeal)
-
-        end = time.time()
-        print("Time elapsed: {}".format(end - start))
-

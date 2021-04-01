@@ -8,7 +8,7 @@ import algorithms
 from core import Game
 from .frame import BaseFrame
 
-class ShowResultsFrame(BaseFrame):
+class FrameResults(BaseFrame):
     """
     Class for displaying the game Result in a frame
 
@@ -60,6 +60,9 @@ class ShowResultsFrame(BaseFrame):
         self.states = state
         self.actual_state = 0
         self.move_count = 0
+
+        if not self.states:
+            self.menu()
 
         first_state = self.states[self.actual_state]
 
@@ -211,14 +214,15 @@ class ShowResultsFrame(BaseFrame):
         """
         if self.actual_state == len(self.states):
             self.moveBtn['text']='Quit'
-            self.moveBtn['command'] = self.test
+            self.moveBtn['command'] = self.menu
 
-    def test(self):
+    def menu(self):
+    
         """
         Switching state to Home Page after quiting
         """
         self.loading = True
-        self.controller.routeHomeFrame()
+        self.controller.routeBoardSelect()
         self.clearFrame()
 
     def extend_board(self,state):

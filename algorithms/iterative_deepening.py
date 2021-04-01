@@ -22,17 +22,21 @@ class IterativeDeepening(threading.Thread):
       - callback used to return the gamestate to the caller thread after if shutsdown
 
     """
-    def __init__(self, callback=lambda: None):
+    def __init__(self, game, callback=lambda: None):
         """
         Constructor method for initializing theIterative Deepening algorithm
 
         Parameters
         ----------
+        game : Game
+          - The initial Game State to run the algorithm
+          
         callback : Callback
           - callback used to return the gamestate to the caller thread after if shutsdown
                 
         """
         threading.Thread.__init__(self)
+        self.game = game
         self.callback = callback
 
     def run(self):
@@ -41,42 +45,18 @@ class IterativeDeepening(threading.Thread):
         This algorithm runs a depth first search Algorithm with incremental depth increase until the solution is found
         """
         start = time.time()
-        for i in range(1, 30):
-            gameState = [1, 2, 3, 4, 5, 6, 7, 8, 9,
-                    1, 1, 1, 2, 1, 3, 1, 4, 1, 
-                    5, 1, 6, 1, 7, 1, 8, 1, 9]
-            columns = 9
-            rows = 3
-            game = Game(0, 0, rows, columns, gameState)
-            game.heuristic = self.heuristic(gameState)
-            print("depth", i ,"attempt") 
+        for i in range(1, 999):
+            game = Game(0, 0, self.game.rows, self.game.columns, self.game.matrix)
+            print("Depth", i ,"attempt") 
             if (self.iterativeDeepeningAux(game, i)):
                 end = time.time()
                 print("Time elapsed: {}".format(end - start))
-
-    def heuristic(self, matrix):
-        """
-        Calculates the game heuristic, based on the ammount of pairs avaliable on the board.
-
-        Parameters
-        ----------
-        matrix : list of int 
-          - flattened list of the game State.
-        Returns
-        -------
-        int
-          - returns the number of avaliable pairs of the board, which is a value that represents the heuristic of a Game.
-
-        """
-        return len([element for element in matrix if element !=  None]) / 2
+                break
         
     def iterativeDeepeningAux(self, game, depth):
         """ 
         Method used to run the algorithm iteratively by continously changing the depth if the solution is not found
         """
-        # rows, columns, gameState = deal(rows, columns, gameState.copy())
-        # Double Ended Queue to allow O(1) pop and append
-        # Set to check if an element was already visited in O(1)
         queue = deque([game])
         visited = set()
 
@@ -90,15 +70,17 @@ class IterativeDeepening(threading.Thread):
                 return False
             # Next GameState
             game = queue.pop()
-            #game.printGame() 
+  
+            if game.moves == depth:
+                continue  
 
             # Found a solution [Empty Matrix]
             if game.isEmpty():
-                gameStates = game.getFullGame()
-                self.callback(gameStates)
-                game.printGameSequence()
                 print("Found a solution: ")
                 print("Total Moves: {}".format(game.moves))
+
+                gameStates = game.getFullGame()
+                self.callback(gameStates)
                 return True
             # Get available moves and add them to the queue
             else:
