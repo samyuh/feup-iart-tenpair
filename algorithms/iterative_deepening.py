@@ -50,11 +50,11 @@ class IterativeDeepening(threading.Thread):
 
             # Found a solution [Empty Matrix]
             if game.isEmpty():
-                gameStates = game.getFullGame()
-                self.callback(gameStates)
-                game.printGameSequence()
                 print("Found a solution: ")
                 print("Total Moves: {}".format(game.moves))
+
+                gameStates = game.getFullGame()
+                self.callback(gameStates)
                 return True
             # Get available moves and add them to the queue
             else:

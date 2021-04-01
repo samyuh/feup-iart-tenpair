@@ -2,6 +2,8 @@
 # -- External Libraries -- #
 import tkinter as tk
 
+from random import randint
+
 # -- Costum Libraries -- #
 from .frame import BaseFrame
 from core import Game
@@ -50,11 +52,16 @@ class FrameBoard(BaseFrame):
         self.controller.routeFrameAlgorithm(game)
 
     def random(self):
-        matrix = [9, 3, 8, 7, 3, 7,
-            2, 1, 1, 8, 9, 2]
+        columns = randint(2, 4)
+        rows = randint(3, 6)
 
-        columns = 6
-        rows = 2
+        n = columns * rows
+        matrix = [randint(1,9) for _ in range(n)]
+
+        # Just to test
+        print(matrix)
+        print(columns)
+        print(rows)
+
         game = Game(0, 0, rows, columns, matrix) 
-
         self.controller.routeFrameAlgorithm(game)

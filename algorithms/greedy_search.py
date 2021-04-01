@@ -37,11 +37,10 @@ class GreedySearch(threading.Thread):
             if game.isEmpty():
                 end = time.time()
                 print("Time elapsed: {}".format(end - start))
-                
-                gameStates = game.getFullGame()
-                self.callback(gameStates)
                 print("Found a solution: ")
                 print("Total Moves: {}".format(game.moves))
+            
+                self.callback(game.getFullGame())
                 break  
 
             operationList = Logic.getAllMoves(game)
