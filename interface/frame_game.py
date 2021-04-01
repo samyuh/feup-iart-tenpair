@@ -109,6 +109,7 @@ class FrameGame(BaseFrame):
         index1_i = states[1].pair[1] // self.game.columns
         index1_j = states[1].pair[1] % self.game.columns
 
+        # TODO If one cell is selected and it is the same as one of the suggested digits, don't change its color
         self.cells[index0_i][index0_j]["frame"].configure(bg="#FA9253")
         self.cells[index0_i][index0_j]["number"].configure(bg="#FA9253")
 
