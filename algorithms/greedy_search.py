@@ -25,6 +25,7 @@ class GreedySearch(threading.Thread):
         # Priority Queue to order by heuristic
         queue = PriorityQueue()
         game = self.game
+        game.heuristic = self.heuristic(game.matrix)
         
         queue.put(game)
 
@@ -34,6 +35,7 @@ class GreedySearch(threading.Thread):
         start = time.time()
         while True:
             game = queue.get()
+
             if game.isEmpty():
                 end = time.time()
                 print("Time elapsed: {}".format(end - start))
@@ -49,14 +51,14 @@ class GreedySearch(threading.Thread):
             for operation in operationList:
                 newGame = Game(newGameMoves, game.dealValue, game.rows, game.columns, game.matrix.copy(),game)
                 newGame.removePair(operation[0], operation[1])
-                newGame.heuristic = self.heuristic(game.matrix.copy())
+                newGame.heuristic = self.heuristic(newGame.matrix)
                 if repr(newGame.matrix) not in visited:
                     visited.add(repr(newGame.matrix))
                     queue.put(newGame)
 
             gameDeal = Game(game.moves, game.dealValue + 1, game.rows, game.columns,game.matrix.copy(), game)
             Logic.deal(gameDeal)
-            gameDeal.heuristic = self.heuristic(gameDeal.matrix.copy())
+            gameDeal.heuristic = self.heuristic(gameDeal.matrix)
             if repr(gameDeal.matrix) not in visited:
                 visited.add(repr(gameDeal.matrix))
                 queue.put(gameDeal)

@@ -33,6 +33,7 @@ class AStar(threading.Thread):
         # Starter State
         game = self.game
         game.heuristic = self.heuristic(game.matrix)
+
         queue.put(game)
 
         visited.add(repr(game.matrix))
@@ -57,7 +58,7 @@ class AStar(threading.Thread):
             for operation in operationList:
                 newGame = Game(newGameMoves, game.dealValue, game.rows, game.columns, game.matrix.copy(), game)
                 newGame.removePair(operation[0], operation[1])
-                newGame.heuristic = newGameMoves + self.heuristic(game.matrix.copy())
+                newGame.heuristic = newGameMoves + self.heuristic(newGame.matrix)
                 if repr(newGame.matrix) not in visited:
                     visited.add(repr(newGame.matrix))
                     queue.put(newGame)
@@ -65,7 +66,7 @@ class AStar(threading.Thread):
             # Deal
             gameDeal = Game(game.moves, game.dealValue + 1, game.rows, game.columns,game.matrix.copy(), game)
             Logic.deal(gameDeal)
-            gameDeal.heuristic = game.moves + self.heuristic(gameDeal.matrix.copy())
+            gameDeal.heuristic = game.moves + self.heuristic(gameDeal.matrix)
             if repr(gameDeal.matrix) not in visited:
                 visited.add(repr(gameDeal.matrix))
                 queue.put(gameDeal)
