@@ -81,7 +81,7 @@ class PythonGUI(tk.Tk):
 
     def canvas_bind(self,event):
         """
-        Binds the canvas to the e parameter
+        When the window is resized, sets the width of the canvas and scrolls to top
 
         Parameters
         ----------
@@ -90,6 +90,7 @@ class PythonGUI(tk.Tk):
         """
         self.my_canvas.itemconfig(self.canvas_window , width=event.width)
         self.my_canvas.configure(scrollregion = self.my_canvas.bbox("all"))
+        self.my_canvas.yview_moveto(0)
 
     def routeBoardSelect(self):
         """

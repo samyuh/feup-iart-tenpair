@@ -99,17 +99,20 @@ class FrameGame(BaseFrame):
     def getNextMove(self, states):
         self.runningHint = False
 
+        # Suggestion is a deal
         if states[1].pair == None:
             self.dealBtn.configure(bg='#FA9253')
             return
 
+        # Suggestion is a pair
+        # Get the row and columns of the 1st element of the pair
         index0_i = states[1].pair[0] // self.game.columns
         index0_j = states[1].pair[0] % self.game.columns
 
+        # Get the row and columns of the 2nd element of the pair
         index1_i = states[1].pair[1] // self.game.columns
         index1_j = states[1].pair[1] % self.game.columns
-
-        # TODO If one cell is selected and it is the same as one of the suggested digits, don't change its color
+    
         self.cells[index0_i][index0_j]["frame"].configure(bg="#FA9253")
         self.cells[index0_i][index0_j]["number"].configure(bg="#FA9253")
 
@@ -262,7 +265,7 @@ class FrameGame(BaseFrame):
 
     def update_GUI(self):
         """
-        Updating the GUI by chaning the board length, matrix, moves and scroll position
+        Updating the GUI by changing the board length, matrix, moves and scroll position
         """
         state = self.game
             
