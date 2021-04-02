@@ -43,8 +43,11 @@ class FrameAlgorithm(BaseFrame):
         frame1_title.pack(fill='both', pady=(10, 30))
 
         # Play Game Button
-        tk.Button(self, text="Start", font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
-                command= self.play, height=3, width=55).pack(pady=5)
+        tk.Button(self, text="Start with Greedy Hints (Faster)", font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
+                command= self.playGreedy, height=3, width=55).pack(pady=5)
+
+        tk.Button(self, text="Start with A* Hints (Precise)", font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
+                command= self.playAStar, height=3, width=55).pack(pady=5)
 
         frame2_title = tk.Label(self, text='Choose an Algorithm to Solve', font='Monoid 23 bold', bg="#212121", fg='#dddddd')
         frame2_title.pack(fill='both', pady=(50, 30))
@@ -52,8 +55,11 @@ class FrameAlgorithm(BaseFrame):
             tk.Button(self, text=key, font='Roboto 16 bold', fg='#ffffff', bg='#1D8EA0', 
                 command= algorithmsDict[key], height=3, width=55).pack(pady=5)
 
-    def play(self):
-        self.controller.routePlayerGame(self.game)
+    def playGreedy(self):
+        self.controller.routePlayerGame(self.game, algorithms.GreedySearch)
+
+    def playAStar(self):
+        self.controller.routePlayerGame(self.game, algorithms.AStar)
 
     def threadAStar(self):
         """

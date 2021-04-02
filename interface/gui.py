@@ -44,8 +44,8 @@ class PythonGUI(tk.Tk):
         Create the widgets for the frame.
         """            
         #  Frame Container
-        # Create to check if user is on windows/linux
-        self.attributes('-zoomed', True)
+        # Uncomment this line to expand windows when opening. Only works on linux
+        #self.attributes('-zoomed', True)
 
         # Create Canvas
         self.my_canvas = tk.Canvas(self, bg="#212121", highlightthickness=0)
@@ -104,12 +104,12 @@ class PythonGUI(tk.Tk):
         self.frames[FrameAlgorithm].initGame(game)
         self.frames[FrameAlgorithm].tkraise()
 
-    def routePlayerGame(self,game):
+    def routePlayerGame(self, game, chosen):
         """
         Switches to the player game menu
         """
         self.frames[FrameGame].initGame(game)
-        self.frames[FrameGame].start_game()
+        self.frames[FrameGame].start_game(chosen)
         self.frames[FrameGame].tkraise()
 
     def routeShowResultsFrame(self):

@@ -9,18 +9,18 @@
 - **Curricular Unit**: [Subject](https://sigarra.up.pt/feup/en/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=459487)
 
 ### Group Members
-Diana Freitas
-Diogo Samuel Fernandes
-Hugo Guimarães
+Diana Freitas, up201806230
+Diogo Samuel Fernandes, up201806250
+Hugo Guimarães, up201806490
 
 ### Description
 TenPair is a logic one player game in which the player must clear all the digits from the board by eliminating pairs of digits that are the same or that sum to 10. The fewer the number of moves, the better the score.
 
 ### Setup
 We used the version 3.9.1 of Python.
-We use Tkinter as graphic interface. In windows, it comes pre-installed with python.
+We used Tkinter as graphic interface. In windows, it comes pre-installed with python.
 However if you are using Linux, you need to ensure that you have tk installed
-> sudo apt-get install tk 
+> apt-get install python-tk
 
 Run the program in terminal
 > python main.py

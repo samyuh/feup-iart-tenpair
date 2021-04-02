@@ -55,11 +55,11 @@ class FrameGame(BaseFrame):
     def initGame(self, game):
         self.game = game
 
-    def start_game(self):
+    def start_game(self, chosen):
         """
         Method for initializing a game
         """
-
+        self.chosen = chosen
         self.currentHint = []
         self.selected = None
         self.runningHint = False
@@ -119,7 +119,7 @@ class FrameGame(BaseFrame):
     def computerHint(self):
         if not self.runningHint:
             self.runningHint = True
-            thread = algorithms.GreedySearch(self.game, self.getNextMove)
+            thread = self.chosen(self.game, self.getNextMove)
             thread.start()        
 
     def playerMove(self, i, j):
@@ -295,10 +295,6 @@ class FrameGame(BaseFrame):
         Updating the GUI in order to show the next move of the found solution
         """
         self.update_GUI()
-        self.over()
-
-    def over(self):
-        pass
 
     def extend_board(self,state):
         """
