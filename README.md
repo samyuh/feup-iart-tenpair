@@ -21,9 +21,13 @@ We used the version 3.9.1 of Python.
 We used Tkinter as graphic interface. In windows, it comes pre-installed with python.
 However if you are using Linux, you need to ensure that you have tk installed. If you're using ubuntu, you can use one of the following command (depending on your python version)
 > apt-get install python-tk
+
 > apt-get install python3-tk
+
 Run the program in terminal
+
 > python main.py
+
 > python3 main.py
 
 After that, a graphic interface will appear and the user can choose the options.
