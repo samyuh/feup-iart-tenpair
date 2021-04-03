@@ -120,6 +120,9 @@ class FrameGame(BaseFrame):
         self.cells[index1_i][index1_j]["number"].configure(bg="#FA9253")
 
     def computerHint(self):
+        if self.game.isEmpty():
+            return
+            
         if not self.runningHint:
             self.runningHint = True
             thread = self.chosen(self.game, self.getNextMove)
