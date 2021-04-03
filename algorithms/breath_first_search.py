@@ -9,6 +9,8 @@ from _collections import deque
 from core.game import Game
 from core.logic import Logic
 
+MAX_DEALS = 1
+
 class BreathFirstSearch(threading.Thread):
     """
     A class used to run the Breadth First Search algorithm 
@@ -87,7 +89,7 @@ class BreathFirstSearch(threading.Thread):
                         visited.add(repr(newGame.matrix))
                         append(newGame)
                 
-                if game.dealValue < 1:
+                if game.dealValue < MAX_DEALS:
                     gameDeal = Game(game.moves, game.dealValue + 1, game.rows, game.columns,game.matrix.copy(), game)
                     Logic.deal(gameDeal)
                     if repr(gameDeal.matrix) not in visited:

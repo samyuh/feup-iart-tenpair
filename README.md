@@ -31,3 +31,7 @@ Run the program in terminal
 > python3 main.py
 
 After that, a graphic interface will appear and the user can choose the options.
+
+### Note
+Currently the Breadth First Search, Depth First Search and Iterative Deepening algorithms are restricted to a maximum of one deal. This value can be changed in the code, however if you increase it the time complexity will grow exponentially.
+The maximum number of deals can be changed by replacing the value of the variable MAX_DEALS, in the line 12 of the breadth_first_search.py, depth_first_search.py and iterative_deepening.py files.
