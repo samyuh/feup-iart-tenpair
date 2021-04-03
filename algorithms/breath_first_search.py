@@ -63,7 +63,7 @@ class BreathFirstSearch(threading.Thread):
             except IndexError as e:
                 print("BFS is only accepting boards that can be solved with one deal.")
                 self.callback([])
-                break
+                return
 
             # Found a solution [Empty Matrix]
             if game.isEmpty():

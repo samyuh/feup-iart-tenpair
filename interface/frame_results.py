@@ -63,6 +63,7 @@ class FrameResults(BaseFrame):
 
         if not self.states:
             self.menu()
+            return
 
         first_state = self.states[self.actual_state]
 
